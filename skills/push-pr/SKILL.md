@@ -1,5 +1,5 @@
 ---
-name: generate-pr-description
+name: push-pr
 description: "Generate concise PR descriptions focusing on summary, scope, and rationale. Quickly document what changed and why for efficient code reviews."
 ---
 
