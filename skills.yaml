@@ -5,11 +5,13 @@ skills:
     name:
       - code-documentation-code-explain
       - code-review-excellence
+      - commit
       - comprehensive-review-pr-enhance
       - concise-planning
       - docker-expert
       - frontend-design
       - kaizen
+      - mermaid-expert
       - postgres-best-practices
       - prompt-engineering
       - tailwind-patterns
