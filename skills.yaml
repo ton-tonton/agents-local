@@ -1,5 +1,4 @@
-# Global upstream path (optional fallback)
-# upstream_path: /Users/tontonton/agents/antigravity-awesome-skills/skills
+# Define the skills to sync from the upstream repository
 
 skills:
   - path: /Users/tontonton/agents/antigravity-awesome-skills/skills
