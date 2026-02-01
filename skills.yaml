@@ -1,0 +1,18 @@
+# Global upstream path (optional fallback)
+# upstream_path: /Users/tontonton/agents/antigravity-awesome-skills/skills
+
+skills:
+  - path: /Users/tontonton/agents/antigravity-awesome-skills/skills
+    name:
+      - code-documentation-code-explain
+      - code-review-excellence
+      - comprehensive-review-pr-enhance
+      - concise-planning
+      - docker-expert
+      - frontend-design
+      - kaizen
+      - postgres-best-practices
+      - prompt-engineering
+      - tailwind-patterns
+      - ui-ux-pro-max
+      - vulnerability-scanner
