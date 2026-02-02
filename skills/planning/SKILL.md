@@ -1,5 +1,5 @@
 ---
-name: concise-planning
+name: planning
 description: Use when a user asks for a plan for a coding task, to generate a clear, actionable, and atomic checklist.
 ---
 
@@ -13,7 +13,7 @@ Turn a user request into a **single, actionable plan** with atomic steps.
 
 ### 1. Scan Context
 
-- Read `README.md`, docs, and relevant code files.
+- Read `AGENTS.md`, docs, and relevant code files.
 - Identify constraints (language, frameworks, tests).
 
 **Research & Documentation**
