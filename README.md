@@ -69,7 +69,9 @@ python3 scripts/sync_skills.py
 #### Development & Code Quality
 - **code-review-excellence** - Structured code review practices
 - **code-documentation-code-explain** - Generate clear code explanations
+- **commit** - Standardized commit messages (Sentry style)
 - **kaizen** - Continuous improvement methodology
+- **mermaid-expert** - Generate Mermaid diagrams (flowcharts, ERDs)
 
 #### Pull Request Management
 - **push-pr** ⭐ *LOCAL* - Quick PR creation for Azure Repos
@@ -88,7 +90,11 @@ python3 scripts/sync_skills.py
 
 #### Process & Planning
 - **concise-planning** - Atomic task planning
+- **do-it** ⭐ *LOCAL* - Rails TDD workflow implementation
+- **planning** ⭐ *LOCAL* - Atomic task planning
+- **plan-writing** - Structured task planning with verification
 - **prompt-engineering** - Prompt optimization techniques
+- **workflow-patterns** - TDD workflow and phase management
 
 ## 🚀 Quick Start
 
