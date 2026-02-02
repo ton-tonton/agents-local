@@ -25,6 +25,9 @@ Create focused PR descriptions that clearly communicate what changed and why, ke
 ## Requirements
 $ARGUMENTS
 
+- **Base Branch**: Defaults to `develop` if not specified
+- **PR Type**: Defaults to `--draft true` if not specified
+
 ## Instructions
 
 1. **Check for PR template**: If the project has `.azuredevops/pull_request_template.md`, read this template first and use its structure/sections to format the output
@@ -90,10 +93,6 @@ Adds JWT-based authentication middleware to protect API endpoints, replacing ses
 - Refactored `UserController.ts` for JWT token generation
 - Removed legacy `SessionManager.ts` code
 
-### Tests
-- Added auth middleware tests and integration tests
-- Added token refresh flow tests
-
 ### Documentation
 - Updated API docs with auth requirements
 - Added authentication setup guide
@@ -119,17 +118,12 @@ Adds JWT-based authentication middleware to protect API endpoints, replacing ses
 - Refactored UserController.ts for JWT token generation
 - Removed legacy SessionManager.ts code
 
-### Tests
-- Added auth middleware tests and integration tests
-- Added token refresh flow tests
-
 ### Documentation
 - Updated API docs with auth requirements
 - Added authentication setup guide
 EOF
 )" \
-  --target-branch main \
-  --auto-complete true \
+  --target-branch [base] \
   --delete-source-branch true \
-  --open
+  --draft true
 ```

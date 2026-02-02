@@ -22,7 +22,6 @@ Follow this cycle for each task in your plan.
 **Select & Mark Task**
 1. Identify the next pending `[ ]` task from `plan.md`.
 2. Update `plan.md` to mark it as in-progress `[~]`.
-3. Commit this status change.
 
 ### 2. Implement (TDD)
 
@@ -64,6 +63,7 @@ Write the minimum code in `app/` necessary to pass tests.
 With green tests, improve the code.
 - Extract common patterns.
 - Simplify logic.
+- Follow DRY principle
 - Ensure tests remain GREEN.
 
 ### 3. Test & Finalize
@@ -78,7 +78,6 @@ With green tests, improve the code.
    ```markdown
    - [x] **Task 2.1**: Implement user validation `abc1234`
    ```
-3. Commit the plan update.
 
 ### 4. Iterate
 Return to **Step 1** for the next task.
