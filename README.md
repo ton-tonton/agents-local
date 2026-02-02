@@ -89,12 +89,9 @@ python3 scripts/sync_skills.py
 - **vulnerability-scanner** - Security analysis (OWASP 2025)
 
 #### Process & Planning
-- **concise-planning** - Atomic task planning
-- **do-it** ⭐ *LOCAL* - Rails TDD workflow implementation
-- **planning** ⭐ *LOCAL* - Atomic task planning
-- **plan-writing** - Structured task planning with verification
+- **do-it** ⭐ *LOCAL* - Rails TDD workflow implementation, custom from `workflow-patterns`
+- **planning** ⭐ *LOCAL* - Atomic task planning, custom from `concise-planning`, `plan-writing`
 - **prompt-engineering** - Prompt optimization techniques
-- **workflow-patterns** - TDD workflow and phase management
 
 ## 🚀 Quick Start
 
