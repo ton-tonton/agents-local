@@ -37,8 +37,7 @@ $ARGUMENTS
 5. Categorize changes by type (source, config, docs)
 6. Extract main purpose from commits and code
 7. Generate description combining the template structure (if exists) with the analyzed changes
-8. Do not include detailed testing instructions or test plans in the description
-9. Use /azure-open-pr skill with generated description
+8. Use /azure-open-pr skill with generated description
 
 ## Output Format
 
