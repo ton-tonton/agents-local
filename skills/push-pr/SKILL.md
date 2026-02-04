@@ -30,13 +30,14 @@ $ARGUMENTS
 
 ## Instructions
 
-1. **Check for PR template**: If the project has `.azuredevops/pull_request_template.md`, read this template first and use its structure/sections to format the output
-2. Run `git diff [base]...HEAD` to see changes
-3. Run `git log [base]...HEAD` to review commits
-4. Categorize changes by type (source, test, config, docs)
-5. Extract main purpose from commits and code
-6. Generate description combining the template structure (if exists) with the analyzed changes
-7. Use /azure-open-pr skill with generated description
+1. **Push current branch**: Run `git push` to ensure the remote branch is up to date
+2. **Check for PR template**: If the project has `.azuredevops/pull_request_template.md`, read this template first and use its structure/sections to format the output
+3. Run `git diff [base]...HEAD` to see changes
+4. Run `git log [base]...HEAD` to review commits
+5. Categorize changes by type (source, config, docs)
+6. Extract main purpose from commits and code
+7. Generate description combining the template structure (if exists) with the analyzed changes
+8. Use /azure-open-pr skill with generated description
 
 ## Output Format
 
@@ -53,9 +54,6 @@ $ARGUMENTS
 ### Source Code
 - Changed/Added/Refactored specific components
 - List key modifications with file references
-
-### Tests
-- Added/Updated tests for new behavior
 
 ### Documentation
 - Updated docs, README, or comments
