@@ -73,8 +73,8 @@ With green tests, improve the code.
 - Check style: `bundle exec rubocop`
 
 **Commit & Update**
-1. Commit implementation with a focused message.
-2. Update `plan.md` to complete `[x]` with the commit SHA.
+1. Commit implementation with a message following Conventional Commits (e.g., `feat: ...`, `fix: ...`, `test: ...`).
+2. Update `plan.md` to mark the task as complete `[x]` and append the short commit SHA.
    ```markdown
    - [x] **Task 2.1**: Implement user validation `abc1234`
    ```
