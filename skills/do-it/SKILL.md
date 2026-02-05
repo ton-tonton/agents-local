@@ -11,13 +11,15 @@ Guide for implementing Rails tasks using a TDD workflow covering Planning, Imple
 
 - Implementing tasks in a Rails project
 - Following a planning-implementation-testing cycle
-- Managing git commits and notes in a Rails environment
+- Managing git commits
 
 ## Instructions
 
-Follow this cycle for each task in your plan.
+- Clarify goals, constraints, and required inputs.
+- Apply relevant best practices and validate outcomes.
+- Follow this cycle for each task in your plan.
 
-### 1. Planning
+### 1. Select Task
 
 **Select & Mark Task**
 1. Identify the next pending `[ ]` task from `plan.md`.
@@ -55,16 +57,23 @@ end
 ```
 
 **GREEN - Implement Minimum Code**
-Write the minimum code in `app/` necessary to pass tests.
-- Focus on making tests green, not perfection.
-- Avoid premature optimization.
+Write the minimum code necessary to make tests pass:
+
+- Focus on making tests green, not perfection
+- Avoid premature optimization
+- Keep implementation simple
+- Run tests - they should PASS
+- Create a focused commit for the implement
 
 **REFACTOR - Improve Clarity**
 With green tests, improve the code.
 - Extract common patterns.
+- Improve naming
+- Remove duplication
 - Simplify logic.
 - Follow DRY principle
 - Ensure tests remain GREEN.
+- Create a focused commit for the refactor
 
 ### 3. Test & Finalize
 
@@ -97,3 +106,42 @@ When all tasks in a phase are complete:
 - **Passing Tests**: All RSpec examples must pass.
 - **Style**: No RuboCop offenses.
 - **Security**: No hardcoded secrets.
+
+## Error Recovery
+
+### Failed Tests After GREEN
+
+If tests fail after reaching GREEN:
+
+1. Do NOT proceed to REFACTOR
+2. Identify which test started failing
+3. Check if refactoring broke something
+4. Revert to last known GREEN state
+5. Re-approach the implementation
+
+## Working with Existing Tests
+
+When modifying code with existing tests:
+
+### Extend, Don't Replace
+
+- Keep existing tests passing
+- Add new tests for new behavior
+- Update tests only when requirements change
+
+### Test Migration
+
+When refactoring changes test structure:
+
+1. Run existing tests (should pass)
+2. Add new tests for refactored code
+3. Migrate test cases to new structure
+4. Remove old tests only after new tests pass
+
+### Commit Performance
+
+Keep commits atomic:
+
+- One logical change per commit
+- Complete thought, not work-in-progress
+- Tests should pass after every commit

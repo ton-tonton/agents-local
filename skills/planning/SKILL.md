@@ -39,29 +39,29 @@ If unsure about syntax or need more information, search documentation using the 
 Use the following structure:
 
 - **Approach**: 1-3 sentences on what and why.
-- **Scope**: Bullet points for "In" and "Out".
-- **Action Items**: A list of 6-10 atomic, ordered tasks (Verb-first).
+- **Tasks**: A list of 6-10 atomic, ordered tasks (Verb-first).
 - **Validation**: At least one item for testing.
 
 ## Plan Template
 
 ```markdown
-# Plan
+# Plan <name>
+
+## Approach
 
 <High-level approach>
 
-## Scope
+## Tasks
 
-- In:
-- Out:
+[ ] <Task 1: Discovery>
+[ ] <Task 2: Implementation>
+[ ] <Task 3: Implementation>
+[ ] <Task 4: Validation/Testing>
+[ ] <Task 5: Rollout/Commit>
 
-## Action Items
+## Notes
 
-[ ] <Step 1: Discovery>
-[ ] <Step 2: Implementation>
-[ ] <Step 3: Implementation>
-[ ] <Step 4: Validation/Testing>
-[ ] <Step 5: Rollout/Commit>
+<Any important considerations>
 
 ## Open Questions
 
