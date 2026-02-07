@@ -26,14 +26,14 @@ This workflow orchestrates a sequential development process involving three spec
 ## Phase 1: Product Definition (PO)
 
 ### 1. Requirements Gathering & Story Creation
-- Use Task tool with subagent_type="po"
+- Use Task tool with subagent @po
 - Prompt: "You are the Product Owner. Create a file named `plan.md`. Analyze the user's request: '$ARGUMENTS'. Write a comprehensive product plan in `plan.md` including: 1) A clear content summary, 2) detailed User Stories with Acceptance Criteria, 3) Business Value/Rationale. Ensure specifications are clear enough for a technical lead to pick up."
 - Expected output: A `plan.md` file containing structured product requirements.
 
 ## Phase 2: Technical Planning (Lead Dev)
 
 ### 1. Architecture & Implementation Planning
-- Use Task tool with subagent_type="lead-dev"
+- Use Task tool with subagent @lead-dev
 - Prompt: "You are the Lead Developer. Read the existing `plan.md` created by the PO. Update `plan.md` by appending a 'Technical Implementation Plan' section. Do NOT overwrite the PO's work. Add: 1) Architecture Overview, 2) Technical Stack confirmation, 3) A step-by-step Implementation Task list (Phase 1, Phase 2, etc.), 4) Testing Strategy. Ensure the tasks are atomic and actionable for the Developer."
 - Context from previous: `plan.md` now contains both product and technical requirements.
 - Expected output: `plan.md` updated with technical architecture and tasks.
@@ -41,7 +41,7 @@ This workflow orchestrates a sequential development process involving three spec
 ## Phase 3: Execution (Dev)
 
 ### 1. Code Implementation & Testing
-- Use Task tool with subagent_type="dev"
+- Use Task tool with subagent @dev
 - Prompt: "You are the Senior Developer. Read the complete `plan.md`. Execute the technical plan step-by-step. For each task defined by the Lead Dev: 1) Write the necessary code, 2) Create and run tests to verify the Acceptance Criteria, 3) Check off the items in `plan.md` as you go. If you encounter ambiguity, make a reasonable technical decision and document it."
 - Context from previous: Completed `plan.md` guiding the implementation.
 - Expected output: Fully implemented feature with passing tests and updated `plan.md` showing progress.
@@ -49,7 +49,7 @@ This workflow orchestrates a sequential development process involving three spec
 ## Phase 4: Delivery
 
 ### 1. Create Pull Request
-- Use the `push-pr` skill to generate a description and open a pull request for the changes implemented in this workflow.
+- Use the /push-pr skill to generate a description and open a pull request for the changes implemented in this workflow.
 
 ## Success Criteria
 
