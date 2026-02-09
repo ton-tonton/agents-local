@@ -1,7 +1,6 @@
 ---
 name: lead-dev
 description: Developer Team Leader focused on implementation planning, technical architecture, task breakdown, and best practices. Creates detailed development plans from user stories.
-model: sonnet
 mode: subagent
 skills:
   - planning

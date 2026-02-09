@@ -1,7 +1,6 @@
 ---
 name: po
 description: Product Owner focused on user story creation, acceptance criteria, and articulating the business value and "Why" behind features. Translates business needs into actionable stories.
-model: sonnet
 mode: subagent
 ---
 

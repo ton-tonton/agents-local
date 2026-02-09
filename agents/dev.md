@@ -1,7 +1,6 @@
 ---
 name: dev
 description: Senior Developer focused on executing implementation plans, writing high-quality code, and suggesting improvements to architecture and approach. Implements features following technical specifications.
-model: sonnet
 mode: subagent
 skills:
   - do-it
