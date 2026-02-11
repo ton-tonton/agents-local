@@ -58,11 +58,14 @@ az boards work-item update --id <WORK_ITEM_ID> --description "New description te
 ```bash
 az boards work-item update --id <WORK_ITEM_ID> \
   --description "$(cat <<'EOF'
-First paragraph of the description explaining the task purpose.
-
-Second paragraph with implementation details and requirements.
-
-Third paragraph with additional notes or acceptance criteria.
+<b>Status Update:</b><br><br>
+<b>1. Issue Analysis</b><br>
+• Root Cause: Identification of the underlying problem.<br>
+• Impact: Description of affected components.<br><br>
+<b>2. Proposed Solution</b><br>
+• Implementation details affecting the API.<br>
+• Required configuration changes.<br>
+• Verification steps for QA.
 EOF
 )"
 ```
@@ -84,11 +87,15 @@ az boards work-item update --id <WORK_ITEM_ID> --discussion "Comment text here"
 ```bash
 az boards work-item update --id <WORK_ITEM_ID> \
   --discussion "$(cat <<'EOF'
-First paragraph of the comment explaining the update.
-
-Second paragraph with additional context or details.
-
-Third paragraph with next steps or questions.
+<b>Daily Scum Update:</b><br><br>
+<b>Completed:</b><br>
+• Refactored the authentication service.<br>
+• Added unit tests for the login flow.<br><br>
+<b>In Progress:</b><br>
+• Working on the user profile update endpoint.<br>
+• debugging the timeout issue in the staging environment.<br><br>
+<b>Blockers:</b><br>
+• Waiting for API documentation from the third-party provider.
 EOF
 )"
 ```
