@@ -72,16 +72,20 @@ python3 scripts/sync_skills.py
 - **commit** - Standardized commit messages (Sentry style)
 - **kaizen** - Continuous improvement methodology
 - **mermaid-expert** - Generate Mermaid diagrams (flowcharts, ERDs)
+- **rails-expert** ⭐ *LOCAL* - Modern Rails development (v8+, Hotwire, Solid Queue)
 
 #### Pull Request Management
 - **push-pr** ⭐ *LOCAL* - Quick PR creation for Azure Repos
 - **azure-open-pr** ⭐ *LOCAL* - Azure CLI PR automation
+- **azure-task** ⭐ *LOCAL* - Manage Azure DevOps work items
 - **comprehensive-review-pr-enhance** - Detailed PR descriptions
 
 #### Design & Frontend
 - **ui-ux-pro-max** - Comprehensive UI/UX design system (50+ styles, 21 palettes)
 - **frontend-design** - Production-grade frontend patterns
-- **tailwind-patterns** - Tailwind CSS v4 best practices
+- **tailwind-design-system** - Tailwind CSS v4 best practices
+- **angular** - Modern Angular (v20+) expert (Signals, Standalone, Zoneless)
+- **angular-best-practices** - Angular performance optimization guide
 
 #### Infrastructure & Security
 - **docker-expert** - Container optimization and security
@@ -92,6 +96,7 @@ python3 scripts/sync_skills.py
 - **do-it** ⭐ *LOCAL* - Rails TDD workflow implementation, custom from `workflow-patterns`
 - **planning** ⭐ *LOCAL* - Atomic task planning, custom from `concise-planning`, `plan-writing`
 - **prompt-engineering** - Prompt optimization techniques
+- **yolo** ⭐ *LOCAL* - End-to-end feature workflow (PO -> Lead -> Dev)
 
 ## 🚀 Quick Start
 
