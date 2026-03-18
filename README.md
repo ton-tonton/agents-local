@@ -98,6 +98,9 @@ python3 scripts/sync_skills.py
 - **prompt-engineering** - Prompt optimization techniques
 - **yolo** ⭐ *LOCAL* - End-to-end feature workflow (PO -> Lead -> Dev)
 
+#### Content & Research
+- **youtube-summarizer** - Extract transcripts and generate detailed summaries from videos
+
 ## 🚀 Quick Start
 
 ### Prerequisites
