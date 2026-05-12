@@ -5,12 +5,12 @@ description: Use this skill for a Rails workflow including planning, implementat
 
 # Do It - Rails Workflow
 
-Guide for implementing Rails tasks using a TDD workflow covering Planning, Implementation, and Testing.
+Guide for implementing Rails tasks using a fast development workflow covering Planning, Implementation, Refactoring, and Testing.
 
 ## Use this skill when
 
 - Implementing tasks in a Rails project
-- Following a planning-implementation-testing cycle
+- Following a planning, implementation, refactoring, and testing cycle
 - Managing git commits
 
 ## Instructions
@@ -25,19 +25,37 @@ Guide for implementing Rails tasks using a TDD workflow covering Planning, Imple
 1. Identify the next pending `[ ]` task from `plan.md`.
 2. Update `plan.md` to mark it as in-progress `[~]`.
 
-### 2. Implement (TDD)
+### 2. Fast Development Cycle
 
 **Research & Documentation**
 If unsure about syntax or need more information, search documentation using the MCP `context7` server.
 
-**RED - Write Failing Tests**
-Define expected behavior with RSpec before implementation.
+**IMPLEMENT - Write the Code**
+Write the minimum code necessary to implement the feature:
+
+- Focus on making the feature work, not perfection
+- Avoid premature optimization
+- Keep implementation simple
+- Verify behavior manually if necessary
+- Create a focused commit for the implementation
+
+**REFACTOR - Improve Clarity**
+Improve the working code.
+- Extract common patterns.
+- Improve naming
+- Remove duplication
+- Simplify logic.
+- Follow DRY principle
+- Create a focused commit for the refactoring
+
+**TEST - Verify Behavior**
+Define expected behavior with RSpec to lock in the implementation.
 
 - Create test file if needed.
 - **Happy Path**: Write only 1 test case for success.
 - **Error Path**: Write only 1 test case for failure/validation.
 - **Edge Cases**: Cover boundaries if needed.
-- Run tests - they MUST fail.
+- Run tests - they should PASS.
 
 ```ruby
 describe User do
@@ -55,25 +73,6 @@ describe User do
   end
 end
 ```
-
-**GREEN - Implement Minimum Code**
-Write the minimum code necessary to make tests pass:
-
-- Focus on making tests green, not perfection
-- Avoid premature optimization
-- Keep implementation simple
-- Run tests - they should PASS
-- Create a focused commit for the implement
-
-**REFACTOR - Improve Clarity**
-With green tests, improve the code.
-- Extract common patterns.
-- Improve naming
-- Remove duplication
-- Simplify logic.
-- Follow DRY principle
-- Ensure tests remain GREEN.
-- Create a focused commit for the refactor
 
 ### 3. Test & Finalize
 
@@ -109,15 +108,14 @@ When all tasks in a phase are complete:
 
 ## Error Recovery
 
-### Failed Tests After GREEN
+### Failed Tests After Refactoring
 
-If tests fail after reaching GREEN:
+If tests fail after completing the testing phase:
 
-1. Do NOT proceed to REFACTOR
-2. Identify which test started failing
-3. Check if refactoring broke something
-4. Revert to last known GREEN state
-5. Re-approach the implementation
+1. Identify which test started failing
+2. Check if recent refactoring broke something
+3. Revert to last known working state
+4. Re-approach the implementation or refactoring step
 
 ## Working with Existing Tests
 
