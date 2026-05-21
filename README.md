@@ -73,6 +73,7 @@ python3 scripts/sync_skills.py
 - **kaizen** - Continuous improvement methodology
 - **mermaid-expert** - Generate Mermaid diagrams (flowcharts, ERDs)
 - **rails-expert** ⭐ *LOCAL* - Modern Rails development (v8+, Hotwire, Solid Queue)
+- **skill-rails-upgrade** - Analyze Rails apps and provide upgrade assessments
 
 #### Pull Request Management
 - **push-pr** ⭐ *LOCAL* - Quick PR creation for Azure Repos
