@@ -5,7 +5,7 @@ description: Use this skill for a Rails workflow including planning, implementat
 
 # Do It - Rails Workflow
 
-Guide for implementing Rails tasks using a fast development workflow covering Planning, Implementation, Refactoring, and Testing.
+Guide for implementing Rails tasks using a fast, test-first development workflow: write specs, implement to green, refactor, then commit.
 
 ## Use this skill when
 
@@ -30,32 +30,14 @@ Guide for implementing Rails tasks using a fast development workflow covering Pl
 **Research & Documentation**
 If unsure about syntax or need more information, search documentation using the MCP `context7` server.
 
-**IMPLEMENT - Write the Code**
-Write the minimum code necessary to implement the feature:
+**TEST FIRST - Define Behavior**
+Write the specs before the implementation. Scope them to the code this task introduces — not overall application coverage.
 
-- Focus on making the feature work, not perfection
-- Avoid premature optimization
-- Keep implementation simple
-- Verify behavior manually if necessary
-- Create a focused commit for the implementation
-
-**REFACTOR - Improve Clarity**
-Improve the working code.
-- Extract common patterns.
-- Improve naming
-- Remove duplication
-- Simplify logic.
-- Follow DRY principle
-- Create a focused commit for the refactoring
-
-**TEST - Verify Behavior**
-Define expected behavior with RSpec to lock in the implementation.
-
-- Create test file if needed.
-- **Happy Path**: Write only 1 test case for success.
-- **Error Path**: Write only 1 test case for failure/validation.
-- **Edge Cases**: Cover boundaries if needed.
-- Run tests - they should PASS.
+- Create the test file if needed.
+- **Happy Path**: Cover the expected success behavior.
+- **Error Path**: Cover failure/validation behavior.
+- **Edge Cases**: Cover boundaries and meaningful edge conditions.
+- Run tests - they should FAIL (red), confirming they exercise the new behavior.
 
 ```ruby
 describe User do
@@ -74,6 +56,25 @@ describe User do
 end
 ```
 
+> **Exception — prototype then lock.** When a failing spec first is awkward (migrations, Rails generators, spikes, config), build the prototype first, then write specs that pin the resulting behavior **before** the commit. The green-commit gate still applies.
+
+**IMPLEMENT - Write the Code**
+Write the minimum code necessary to make the specs pass:
+
+- Focus on making the feature work, not perfection
+- Avoid premature optimization
+- Keep implementation simple
+- Run tests - they should now PASS (green).
+
+**REFACTOR - Improve Clarity**
+Improve the working code.
+- Extract common patterns.
+- Improve naming
+- Remove duplication
+- Simplify logic.
+- Follow DRY principle
+- Run tests - they should still PASS.
+
 ### 3. Test & Finalize
 
 **Verify**
@@ -81,7 +82,7 @@ end
 - Check style: `bundle exec rubocop`
 
 **Commit & Update**
-1. Commit implementation with a message following Conventional Commits (e.g., `feat: ...`, `fix: ...`, `test: ...`).
+1. Create a single focused commit for the task — only after `rspec` is green — with a message following Conventional Commits (e.g., `feat: ...`, `fix: ...`, `test: ...`). The commit includes both the specs and the implementation.
 2. Update `plan.md` to mark the task as complete `[x]` and append the short commit SHA.
    ```markdown
    - [x] **Task 2.1**: Implement user validation `abc1234`
@@ -110,12 +111,20 @@ When all tasks in a phase are complete:
 
 ### Failed Tests After Refactoring
 
-If tests fail after completing the testing phase:
+If tests fail after refactoring or when running the full suite:
 
 1. Identify which test started failing
 2. Check if recent refactoring broke something
 3. Revert to last known working state
 4. Re-approach the implementation or refactoring step
+
+### Can't Reach Green
+
+If you can't get to a passing state after ~2–3 attempts, stop thrashing:
+
+1. Revert to the last green state.
+2. Reassess the approach — the task may be mis-scoped or the plan assumption wrong.
+3. Surface the blocker (or ask) before continuing, rather than looping on the same fix.
 
 ## Working with Existing Tests
 
@@ -135,11 +144,3 @@ When refactoring changes test structure:
 2. Add new tests for refactored code
 3. Migrate test cases to new structure
 4. Remove old tests only after new tests pass
-
-### Commit Performance
-
-Keep commits atomic:
-
-- One logical change per commit
-- Complete thought, not work-in-progress
-- Tests should pass after every commit

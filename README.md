@@ -97,7 +97,6 @@ python3 scripts/sync_skills.py
 - **do-it** ⭐ *LOCAL* - Rails workflow implementation, custom from `workflow-patterns`
 - **planning** ⭐ *LOCAL* - Atomic task planning, custom from `concise-planning`, `plan-writing`
 - **prompt-engineering** - Prompt optimization techniques
-- **yolo** ⭐ *LOCAL* - End-to-end feature workflow (PO -> Lead -> Dev)
 
 #### Content & Research
 - **youtube-summarizer** - Extract transcripts and generate detailed summaries from videos
