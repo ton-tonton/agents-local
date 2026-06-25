@@ -17,11 +17,15 @@ agents-local/
 ├── skills.yaml              # Skill manifest and sync configuration
 ├── scripts/
 │   └── sync_skills.py      # Automated sync utility
+├── agents/                  # [LOCAL] Subagent definitions
+│   ├── task-smith.md       # Rough request → structured task
+│   └── rails-ninja.md    # Version-aware Rails worker
 ├── skills/                  # Skill collection
+│   ├── cooking/            # [LOCAL] Orchestrator (spec → … → PR)
+│   ├── ship-it/            # [LOCAL] Test-first implementation loop
 │   ├── azure-open-pr/      # [LOCAL] Azure DevOps PR creation
 │   ├── push-pr/            # [LOCAL] Quick PR generation
 │   ├── code-review-excellence/
-│   ├── comprehensive-review-pr-enhance/
 │   ├── ui-ux-pro-max/
 │   └── ...                 # Additional synced skills
 └── .claude/
@@ -64,15 +68,24 @@ python3 scripts/sync_skills.py
 4. Preserves local-only skills
 5. Reports sync status
 
-### 3. Skill Categories
+### 3. Agents (agents/*.md)
+
+Worker subagents dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end.
+
+- **task-smith** ⭐ *LOCAL* - Turns a rough request into a structured, developer-ready task
+- **rails-ninja** ⭐ *LOCAL* - Version-aware Rails implementation worker (Rails 7.x/8.x, Hotwire, Solid Queue)
+
+> **Pattern: thin subagent + rich skills.** Agent files stay small ("do this workflow") and pull in skills for the real knowledge. `rails-ninja` loads `rails-way` (patterns) + `ship-it` (test-first loop) at runtime instead of embedding them — so that knowledge stays reusable in the main session too.
+
+### 4. Skill Categories
 
 #### Development & Code Quality
 - **code-review-excellence** - Structured code review practices
 - **code-documentation-code-explain** - Generate clear code explanations
-- **commit** - Standardized commit messages (Sentry style)
+- **commit** ⭐ *LOCAL* - Concise Conventional Commits (was Sentry upstream, now trimmed + owned here)
 - **kaizen** - Continuous improvement methodology
 - **mermaid-expert** - Generate Mermaid diagrams (flowcharts, ERDs)
-- **rails-expert** ⭐ *LOCAL* - Modern Rails development (v8+, Hotwire, Solid Queue)
+- **rails-way** ⭐ *LOCAL* - Version-aware Rails patterns (7.x/8.x), pulled in by the rails-ninja agent
 - **skill-rails-upgrade** - Analyze Rails apps and provide upgrade assessments
 
 #### Pull Request Management
@@ -94,7 +107,8 @@ python3 scripts/sync_skills.py
 - **vulnerability-scanner** - Security analysis (OWASP 2025)
 
 #### Process & Planning
-- **do-it** ⭐ *LOCAL* - Rails workflow implementation, custom from `workflow-patterns`
+- **ship-it** ⭐ *LOCAL* - Stack-agnostic test-first implementation loop, custom from `workflow-patterns`
+- **cooking** ⭐ *LOCAL* - Orchestrates spec → plan → build → test → review → PR
 - **planning** ⭐ *LOCAL* - Atomic task planning, custom from `concise-planning`, `plan-writing`
 - **prompt-engineering** - Prompt optimization techniques
 

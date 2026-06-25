@@ -19,7 +19,7 @@ There is no build, test, or lint setup — verification means re-running the syn
 **Two kinds of skills, distinguished by whether they appear in `skills.yaml`:**
 
 - **Synced skills** — listed under `skills:` in `skills.yaml`. `sync_skills.py` mirrors them from an upstream `path` into `skills/<name>/` using `rsync -av --delete`. **Local edits to these are destroyed on next sync** — change them upstream instead.
-- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-open-pr`, `azure-task`, `do-it`, `planning`, `push-pr`, `rails-expert`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
+- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-open-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `ship-it`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
 
 Before editing anything in `skills/`, check whether its name is in `skills.yaml`. If it is, edits are temporary.
 
@@ -27,7 +27,18 @@ Before editing anything in `skills/`, check whether its name is in `skills.yaml`
 
 **Skill format:** each `skills/<name>/SKILL.md` starts with YAML frontmatter (`name`, `description`) followed by the skill body. Some skills carry supporting `data/` and `scripts/` subdirectories (e.g. `ui-ux-pro-max`).
 
-**Agents** (`agents/*.md`): subagent definitions with frontmatter (`name`, `description`, `mode: subagent`, and a `skills:` list wiring in skills like `do-it`). The `dev` → `lead-dev` → `po` set backs the `yolo` end-to-end workflow.
+**Agents** (`agents/*.md`): subagent definitions with YAML frontmatter — `name`, `description`, `model` (`inherit`/`sonnet`/`opus`/`haiku`), optional `tools` (array, e.g. `["Read", "Grep"]`; omit for all), optional `color`. A file is a subagent because it lives in `agents/` — there is no `mode` field. Current agents:
+
+- `task-smith` — turns a rough request into a structured, developer-ready task.
+- `rails-ninja` — version-aware Rails implementation worker (adapts to Rails 7.x/8.x).
+
+**Pattern: thin subagent + rich skills.** An agent file stays small and just says
+"do this workflow"; the real knowledge lives in skills it pulls in. `rails-ninja`
+is thin — it has the `Skill` tool and loads `rails-way` (patterns) + `ship-it`
+(test-first loop) at runtime rather than embedding them. This keeps the knowledge
+reusable in the main session too, and the agent easy to read.
+
+These are worker subagents, dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end: spec (`task-smith`) → plan (`planning`) → build (`rails-ninja`, following `ship-it`) → test → review (`code-review`) → PR (`push-pr`). The orchestrator lives as a **skill**, not an agent, because only the main session can reliably dispatch subagents.
 
 ## Conventions
 
