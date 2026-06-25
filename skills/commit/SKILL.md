@@ -35,8 +35,19 @@ branch name and confirm it with the user.
 
 ## 3. Types
 
-`feat` · `fix` · `ref` (refactor) · `perf` · `docs` · `test` · `build` · `ci` ·
-`chore` · `style`
+| Type | Use for |
+|------|---------|
+| `feat` | Features |
+| `fix` | Bug fixes |
+| `docs` | Documentation |
+| `style` | Styles (formatting, no logic change) |
+| `refactor` | Code refactoring (no behavior change) |
+| `perf` | Performance improvements |
+| `test` | Tests |
+| `build` | Builds / dependencies |
+| `ci` | Continuous integration |
+| `chore` | Chores / maintenance |
+| `revert` | Reverts |
 
 Use `!` after the type for a breaking change (e.g. `feat(api)!:`) and add a
 `BREAKING CHANGE:` footer line.

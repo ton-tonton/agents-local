@@ -15,8 +15,8 @@ worker subagents. Subagents cannot reliably do this.
 
 - **You are the single source of truth for intent.** Subagents lose their *context*
   after they return, but they share the *filesystem*. Re-pass only what lives in
-  context — the spec and the exact failure. Files on disk (`plan.md`, the code) the
-  worker reads itself; don't re-send them.
+  context — the spec and the exact failure. Files on disk (the plan file in
+  `.agent/plans/`, the code) the worker reads itself; don't re-send them.
 - **Gate on evidence, not vibes.** "Done" means tests pass with real output —
   never a subagent's say-so.
 - **Cap every fix loop at 3 tries.** If still red, stop and report. Do not thrash.
@@ -35,7 +35,8 @@ If the request is vague, dispatch `task-smith` to produce a structured spec
 Hold the returned spec. Skip this only if the request is already a clear spec.
 
 ### 2. Plan → `planning` (skill, in your context)
-Run the `planning` skill yourself. It writes `plan.md` — an atomic checklist.
+Run the `planning` skill yourself. It writes a plan file under `.agent/plans/`
+(e.g. `.agent/plans/2026-06-25-1430-favorite-articles.md`) — an atomic checklist.
 The plan must live in *your* context so you can drive and check each step.
 Review it; fix obvious gaps before building.
 
@@ -46,7 +47,7 @@ For each round:
      skills itself and builds test-first — you don't tell it how.
    - For a stack with no expert agent: implement in the main session using the
      `ship-it` skill directly.
-   Pass only what lives in context: the spec, the `plan.md` task, and — if
+   Pass only what lives in context: the spec, the plan file path + which task, and — if
    retrying — the exact failure. The worker reads the current code from disk.
 2. **Run the gate yourself** via `Bash` — directly, no subagent. Use the project's
    real test + lint commands (the same ones `ship-it` step 0 detects — e.g.
@@ -73,7 +74,7 @@ Only when green + reviewed. Run `push-pr` to write the description and open the 
 request
   │ task-smith (subagent)      → spec        [own context]
   ▼
-  │ planning (skill)           → plan.md     [your context]
+  │ planning (skill)           → plan file   [your context]
   ▼
   ├── LOOP ≤3 ───────────────────────────────────────────┐
   │   rails-ninja (subagent)   → loads rails-way + ship-it │

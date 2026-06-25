@@ -42,7 +42,10 @@ Use the following structure:
 - **Tasks**: A list of atomic, ordered tasks (Verb-first) — as many as the work needs, no padding or cramming.
 - **Validation**: At least one item for testing.
 
-Create file `plan.md` with the plan.
+Write the plan to `.agent/plans/<YYYY-MM-DD-HHmm>-<task-slug>.md`
+(get the timestamp with `date +%Y-%m-%d-%H%M`; build the slug from the task
+title, kebab-case — e.g. `.agent/plans/2026-06-25-1430-favorite-articles.md`).
+Create the `.agent/plans/` directory if it doesn't exist. This path is gitignored.
 
 ## Plan Template
 

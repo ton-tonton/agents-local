@@ -27,11 +27,13 @@ Use what the project actually uses. The examples below show Ruby; substitute you
 
 - Clarify goals, constraints, and required inputs.
 - If unsure about syntax or APIs, look it up (e.g. the `context7` MCP server).
-- Follow this cycle for each task in `plan.md`.
+
+**`$PLAN_FILE`** = the plan file you were given, or — if none — the most recent
+`.agent/plans/*.md`. Follow this cycle for each task in `$PLAN_FILE`.
 
 ### 1. Select task
 
-1. Pick the next pending `[ ]` task from `plan.md`.
+1. Pick the next pending `[ ]` task from `$PLAN_FILE`.
 2. Mark it in-progress `[~]`.
 
 ### 2. Fast development cycle
@@ -73,7 +75,7 @@ optimization. Run the test — it should now **pass (green)**.
 1. Create the commit with the `commit` skill — it owns the message format, branch
    safety, and the Co-Authored-By trailer. One focused commit per task, including
    both the tests and the implementation. Don't write the commit by hand.
-2. Mark the task `[x]` in `plan.md` and append the short commit SHA.
+2. Mark the task `[x]` in `$PLAN_FILE` and append the short commit SHA.
    ```markdown
    - [x] **Task 2.1**: Implement user validation `abc1234`
    ```
