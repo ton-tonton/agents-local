@@ -1,10 +1,10 @@
 ---
-name: azure-open-pr
+name: azure-pr
 description: Create Azure Repos pull requests via CLI with az repos pr create
 allowed-tools: Read, Bash
 ---
 
-# Azure Open PR
+# Azure PR
 
 Create and manage pull requests in Azure Repos using the Azure CLI.
 

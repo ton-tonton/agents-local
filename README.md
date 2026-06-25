@@ -21,10 +21,10 @@ agents-local/
 │   ├── task-smith.md       # Rough request → structured task
 │   └── rails-ninja.md    # Version-aware Rails worker
 ├── skills/                  # Skill collection
-│   ├── cooking/            # [LOCAL] Orchestrator (spec → … → PR)
+│   ├── cooking/            # [LOCAL] Orchestrator (work item → … → PR)
 │   ├── ship-it/            # [LOCAL] Test-first implementation loop
-│   ├── azure-open-pr/      # [LOCAL] Azure DevOps PR creation
-│   ├── push-pr/            # [LOCAL] Quick PR generation
+│   ├── azure-pr/           # [LOCAL] Azure DevOps PR creation
+│   ├── push-pr/            # [LOCAL] PR description + open (host-agnostic)
 │   ├── code-review-excellence/
 │   ├── ui-ux-pro-max/
 │   └── ...                 # Additional synced skills
@@ -89,8 +89,8 @@ Worker subagents dispatched from the main session via the `Agent` tool. The `coo
 - **skill-rails-upgrade** - Analyze Rails apps and provide upgrade assessments
 
 #### Pull Request Management
-- **push-pr** ⭐ *LOCAL* - Quick PR creation for Azure Repos
-- **azure-open-pr** ⭐ *LOCAL* - Azure CLI PR automation
+- **push-pr** ⭐ *LOCAL* - Host-agnostic PR description + open (delegates to the host opener)
+- **azure-pr** ⭐ *LOCAL* - Azure CLI PR automation (opener for Azure Repos)
 - **azure-task** ⭐ *LOCAL* - Manage Azure DevOps work items
 - **comprehensive-review-pr-enhance** - Detailed PR descriptions
 
@@ -108,7 +108,7 @@ Worker subagents dispatched from the main session via the `Agent` tool. The `coo
 
 #### Process & Planning
 - **ship-it** ⭐ *LOCAL* - Stack-agnostic test-first implementation loop, custom from `workflow-patterns`
-- **cooking** ⭐ *LOCAL* - Orchestrates spec → plan → build → test → review → PR
+- **cooking** ⭐ *LOCAL* - Orchestrates Azure work item → plan → build → test → review → PR (tracks state + time)
 - **planning** ⭐ *LOCAL* - Atomic task planning, custom from `concise-planning`, `plan-writing`
 - **prompt-engineering** - Prompt optimization techniques
 

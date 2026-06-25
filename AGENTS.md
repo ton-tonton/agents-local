@@ -19,7 +19,7 @@ There is no build, test, or lint setup — verification means re-running the syn
 **Two kinds of skills, distinguished by whether they appear in `skills.yaml`:**
 
 - **Synced skills** — listed under `skills:` in `skills.yaml`. `sync_skills.py` mirrors them from an upstream `path` into `skills/<name>/` using `rsync -av --delete`. **Local edits to these are destroyed on next sync** — change them upstream instead.
-- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-open-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `ship-it`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
+- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `ship-it`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
 
 Before editing anything in `skills/`, check whether its name is in `skills.yaml`. If it is, edits are temporary.
 
@@ -38,7 +38,7 @@ is thin — it has the `Skill` tool and loads `rails-way` (patterns) + `ship-it`
 (test-first loop) at runtime rather than embedding them. This keeps the knowledge
 reusable in the main session too, and the agent easy to read.
 
-These are worker subagents, dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end: spec (`task-smith`) → plan (`planning`) → build (`rails-ninja`, following `ship-it`) → test → review (`code-review`) → PR (`push-pr`). The orchestrator lives as a **skill**, not an agent, because only the main session can reliably dispatch subagents.
+These are worker subagents, dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end from a **required Azure work item link**: load item (`azure-task`) → spec (`task-smith`, story only) → plan (`planning`) → build (`rails-ninja`, following `ship-it`) → test → review (`code-review-excellence`) → PR (`push-pr`), updating the work item's state and completed time along the way. The orchestrator lives as a **skill**, not an agent, because only the main session can reliably dispatch subagents.
 
 ## Conventions
 

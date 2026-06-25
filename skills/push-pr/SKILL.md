@@ -1,36 +1,49 @@
 ---
 name: push-pr
-description: "Generate concise PR descriptions and create Azure Repos pull requests. Analyzes changes, formats description, and opens PR via Azure CLI."
-allowed-tools: Read, Bash
+description: "Generate a concise PR description and open the pull request. Analyzes the diff and commits, formats a clear description, detects the git host, and delegates opening to the host's PR skill."
+allowed-tools: Read, Bash, Skill
 ---
 
 # Generate and Open PR
 
-Generate clear, concise PR descriptions and create the pull request in Azure Repos. Analyzes changes, formats description, and opens PR via Azure CLI.
+Write a clear, concise PR description, then open the pull request with the
+**host's** PR skill. This skill is host-agnostic: it decides *what to say*; the
+host skill decides *how to send it*.
 
 ## Use this skill when
 
-- Creating and opening pull requests in Azure Repos
-- Need to quickly analyze changes and create a PR
-- Want automated PR creation with concise descriptions
-
-## Context
-Create focused PR descriptions that clearly communicate what changed and why, keeping descriptions under 2000 characters.
-
-- **Base Branch**: Defaults to `develop` if not specified
-- **PR Type**: Defaults to `--draft true` if not specified
+- You want to analyze changes and open a PR in one step
+- You need a concise PR description generated from the diff
 
 ## Instructions
 
-- Use `develop` as [base] if not specified by user
-
-1. **Push current branch**: Run `git push` to ensure the remote branch is up to date
-2. **Check for PR template**: If the project has `.azuredevops/pull_request_template.md`, read this template first and use its structure/sections to format the output
-3. Run `git diff [base]...HEAD` to see changes
-4. Run `git log [base]...HEAD` to review commits
-5. Analyze changes and identify **only the important/significant modifications**
-6. Generate a concise description listing what changed, omitting minor changes (whitespace, formatting, trivial refactors)
-7. Use /azure-open-pr skill with generated description
+1. **Detect the host** from the remote:
+   ```bash
+   git remote get-url origin
+   ```
+   - `dev.azure.com` / `visualstudio.com` → use the **`azure-pr`** skill to open.
+   - Any other host → stop and tell the user no opener is wired for that host yet.
+2. **Pick the base branch.** Use what the user specified. If they didn't, detect
+   the repo's default branch and confirm it:
+   ```bash
+   git remote show origin | sed -n 's/.*HEAD branch: //p'
+   ```
+   Don't assume `main` vs `develop` — different repos differ.
+3. **Push the current branch**: `git push` so the remote branch is up to date.
+4. **Check for a PR template** (host-dependent location, e.g.
+   `.azuredevops/pull_request_template.md`). If present, read it and follow its
+   sections instead of the default format below.
+5. **Review the changes**:
+   ```bash
+   git diff <base>...HEAD
+   git log  <base>...HEAD
+   ```
+6. **Generate the description** — list only the important changes. Skip whitespace,
+   formatting, and trivial refactors. Keep it under ~2000 characters.
+7. **Open the PR** by invoking the host skill from step 1 with the title,
+   description, and base branch (e.g. the `azure-pr` skill for Azure Repos).
+   If you were given a work item / issue ID, pass it so the opener links it
+   (Azure: `--work-items <ID>`).
 
 ## Output Format
 
@@ -54,21 +67,20 @@ Create focused PR descriptions that clearly communicate what changed and why, ke
 
 ## Guidelines
 
-- **Check for existing template**: Always look for `.azuredevops/pull_request_template.md` first and adapt to its format if present
-- **Focus on what changed**: List functional changes, not why or rationale
-- **Be brief**: Include only important changes, skip trivial updates
-- **Use file references**: Mention specific files/functions that changed
-- **Skip obvious items**: Don't mention formatting, whitespace, minor refactors
-- **Group related changes**: Combine similar modifications
-- **Keep it scannable**: Short bullet points, easy to read quickly
+- **Check for a template first** and adapt to its format if present.
+- **Focus on what changed**: list functional changes, not rationale.
+- **Be brief**: only important changes; skip trivial updates.
+- **Use file references**: name specific files/functions that changed.
+- **Group related changes** and keep bullets scannable.
 
 ## Example
 
-### Generated Description:
+### Generated description
 ```markdown
 ## Summary
 
-Adds JWT-based authentication middleware to protect API endpoints, replacing session-based auth for better scalability.
+Adds JWT-based authentication middleware to protect API endpoints, replacing
+session-based auth for better scalability.
 
 ## What Changed
 
@@ -80,32 +92,7 @@ Adds JWT-based authentication middleware to protect API endpoints, replacing ses
 
 ### Documentation
 - Updated API docs with auth requirements
-- Added authentication setup guide
 ```
 
-### PR Creation Command:
-```bash
-az repos pr create \
-  --title "feat: Add JWT-based authentication middleware" \
-  --description "$(cat <<'EOF'
-## Summary
-
-Adds JWT-based authentication middleware to protect API endpoints, replacing session-based auth for better scalability.
-
-## What Changed
-
-### Source Code
-- Added AuthMiddleware.ts with JWT validation
-- Updated routes/api.ts to use auth middleware
-- Refactored UserController.ts for JWT token generation
-- Removed legacy SessionManager.ts code
-
-### Documentation
-- Updated API docs with auth requirements
-- Added authentication setup guide
-EOF
-)" \
-  --target-branch develop \
-  --delete-source-branch true \
-  --draft true
-```
+Then hand the title + this description + base branch to the host's PR skill
+(`azure-pr` for Azure Repos), which runs the actual create command.
