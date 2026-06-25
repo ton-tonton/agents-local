@@ -62,7 +62,7 @@ Create file `plan.md` with the plan.
 - [ ] **Task 2.4**: <Implementation step>
 - [ ] **Task 3.1**: <Validation / testing>
 
-<!-- List as many atomic, ordered tasks as the work needs. Group with N.N IDs so do-it can mark [x] + commit SHA. -->
+<!-- List as many atomic, ordered tasks as the work needs. Group with N.N IDs so ship-it can mark [x] + commit SHA. -->
 
 ## Notes
 
