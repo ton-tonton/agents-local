@@ -29,16 +29,18 @@ Before editing anything in `skills/`, check whether its name is in `skills.yaml`
 
 **Agents** (`agents/*.md`): subagent definitions with YAML frontmatter — `name`, `description`, `model` (`inherit`/`sonnet`/`opus`/`haiku`), optional `tools` (array, e.g. `["Read", "Grep"]`; omit for all), optional `color`. A file is a subagent because it lives in `agents/` — there is no `mode` field. Current agents:
 
-- `task-smith` — turns a rough request into a structured, developer-ready task.
-- `rails-ninja` — version-aware Rails implementation worker (adapts to Rails 7.x/8.x).
+- `erwin` — turns a rough request into a structured, developer-ready task.
+- `eren` — version-aware Rails implementation worker (adapts to Rails 7.x/8.x).
+- `levi` — read-only code reviewer; reports findings with a verdict, never edits.
 
 **Pattern: thin subagent + rich skills.** An agent file stays small and just says
-"do this workflow"; the real knowledge lives in skills it pulls in. `rails-ninja`
+"do this workflow"; the real knowledge lives in skills it pulls in. `eren`
 is thin — it has the `Skill` tool and loads `rails-way` (patterns) + `ship-it`
-(test-first loop) at runtime rather than embedding them. This keeps the knowledge
-reusable in the main session too, and the agent easy to read.
+(test-first loop) at runtime rather than embedding them. `levi` is the
+same shape: thin worker, loads `code-review-excellence` at runtime. This keeps the
+knowledge reusable in the main session too, and the agent easy to read.
 
-These are worker subagents, dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end from a **required Azure work item link**: load item (`azure-task`) → spec (`task-smith`, story only) → plan (`planning`) → build (`rails-ninja`, following `ship-it`) → test → review (`code-review-excellence`) → PR (`push-pr`), updating the work item's state and completed time along the way. The orchestrator lives as a **skill**, not an agent, because only the main session can reliably dispatch subagents.
+These are worker subagents, dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end from a **plain request or an optional Azure work item link**: understand the goal (the request, or `azure-task` to load a linked item) → plan (`planning`) → build (`eren`, following `ship-it`) → test → review (`levi` subagent loading `code-review-excellence`, read-only; fixes go back to the worker) → PR (`push-pr`). It tracks state + completed time only when the link is a Task; a story or a no-link run is built but not tracked. The orchestrator lives as a **skill**, not an agent, because only the main session can reliably dispatch subagents.
 
 ## Conventions
 

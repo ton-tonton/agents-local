@@ -18,8 +18,9 @@ agents-local/
 ├── scripts/
 │   └── sync_skills.py      # Automated sync utility
 ├── agents/                  # [LOCAL] Subagent definitions
-│   ├── task-smith.md       # Rough request → structured task
-│   └── rails-ninja.md    # Version-aware Rails worker
+│   ├── erwin.md            # Rough request → structured task
+│   ├── eren.md             # Version-aware Rails worker
+│   └── levi.md             # Read-only code reviewer
 ├── skills/                  # Skill collection
 │   ├── cooking/            # [LOCAL] Orchestrator (work item → … → PR)
 │   ├── ship-it/            # [LOCAL] Test-first implementation loop
@@ -72,10 +73,11 @@ python3 scripts/sync_skills.py
 
 Worker subagents dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end.
 
-- **task-smith** ⭐ *LOCAL* - Turns a rough request into a structured, developer-ready task
-- **rails-ninja** ⭐ *LOCAL* - Version-aware Rails implementation worker (Rails 7.x/8.x, Hotwire, Solid Queue)
+- **erwin** ⭐ *LOCAL* - Turns a rough request into a structured, developer-ready task
+- **eren** ⭐ *LOCAL* - Version-aware Rails implementation worker (Rails 7.x/8.x, Hotwire, Solid Queue)
+- **levi** ⭐ *LOCAL* - Read-only code reviewer; reports findings with a verdict, never edits
 
-> **Pattern: thin subagent + rich skills.** Agent files stay small ("do this workflow") and pull in skills for the real knowledge. `rails-ninja` loads `rails-way` (patterns) + `ship-it` (test-first loop) at runtime instead of embedding them — so that knowledge stays reusable in the main session too.
+> **Pattern: thin subagent + rich skills.** Agent files stay small ("do this workflow") and pull in skills for the real knowledge. `eren` loads `rails-way` (patterns) + `ship-it` (test-first loop) at runtime instead of embedding them — so that knowledge stays reusable in the main session too.
 
 ### 4. Skill Categories
 
@@ -85,7 +87,7 @@ Worker subagents dispatched from the main session via the `Agent` tool. The `coo
 - **commit** ⭐ *LOCAL* - Concise Conventional Commits (was Sentry upstream, now trimmed + owned here)
 - **kaizen** - Continuous improvement methodology
 - **mermaid-expert** - Generate Mermaid diagrams (flowcharts, ERDs)
-- **rails-way** ⭐ *LOCAL* - Version-aware Rails patterns (7.x/8.x), pulled in by the rails-ninja agent
+- **rails-way** ⭐ *LOCAL* - Version-aware Rails patterns (7.x/8.x), pulled in by the eren agent
 - **skill-rails-upgrade** - Analyze Rails apps and provide upgrade assessments
 
 #### Pull Request Management
