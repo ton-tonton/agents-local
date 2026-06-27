@@ -51,6 +51,14 @@ When invoked:
    - **Performance** — N+1 queries, needless work in loops, obvious hot paths.
    - **Maintainability** — naming, duplication, dead code, missing tests for new
      behavior, and drift from the surrounding code's patterns.
+   - **Comment quality** — flag comments that over-explain instead of carrying the
+     one non-obvious *why*. Tells:
+       - restates what the code already shows — the literal value, the emitted
+         output, or the variable being set;
+       - reads like an investigation log or a chain of "X, so Y, which Z";
+       - bundles several facts where only one is load-bearing.
+     When you flag one, propose the minimal why-only rewrite — don't just say
+     "shorten it".
 5. **Stay read-only.** Do not edit code, do not run the test suite or linter, do
    not commit. You only read and report.
 

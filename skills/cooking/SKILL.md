@@ -79,14 +79,18 @@ Then, before building:
 1. **Create the feature branch** (named from the goal) if you're on `main`/`master`.
    Doing it now keeps the stamp below correct and stops the worker's `commit` skill
    from pausing to ask for a branch mid-loop.
-2. **Stamp tracking metadata** into the plan file:
+2. **Stamp tracking metadata** into the plan file. Read the start epoch from the
+   `SessionStart` hook file — so any clarification you did *before* triggering
+   cooking is counted (fallback to now if the file is missing):
+   ```bash
+   START=$(cat "$CLAUDE_PROJECT_DIR/.claude/cooking-session-start" 2>/dev/null || date +%s)
+   ```
    ```markdown
    ## Tracking
    - Work item: <ID> (<type>)   # omit this line when there's no link
    - Branch: <current branch>
-   - Started: <date +%Y-%m-%dT%H:%M:%S%z>  (epoch <date +%s>)
+   - Started: <format %Y-%m-%dT%H:%M:%S%z of START>  (epoch <START>)
    ```
-   Keep the start epoch — you reuse it for completed time at PR and the chat log.
 3. **Review the plan** and fix obvious gaps.
 
 ## 2 — Build + test loop (≤3 rounds)
@@ -140,6 +144,7 @@ Only when green **and** reviewed.
    off to `azure-pr`, which runs `az repos pr create --work-items <ID>`. If a PR
    already exists for the branch, **update it — don't open a second one.**
 2. **Log elapsed time in chat** — always, e.g. "Time spent in cooking: 2h 14m".
+   Compute it from the `START` epoch in plan file.
 3. **Update the work item — only if tracking a Task** (skip otherwise). Set state +
    completed time only:
    - **State** → `Pull Requested`.
