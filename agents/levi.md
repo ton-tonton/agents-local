@@ -42,6 +42,13 @@ When invoked:
      file path, read it and check the change against its tasks and validation items.
      Clean code that solves the wrong problem, or misses part of the ask, is a
      blocking finding. If no goal was provided, note that and review the rest.
+   - **Necessity** — challenge whether each *added* artifact earns its place, not
+     just whether it is correct. A test, comment, file, or abstraction can be
+     correct and still be ceremony. Watch especially for additions that fight the
+     goal: when the change *removes* a feature, a new test that only asserts that
+     feature is gone (e.g. a deleted route now 404s) usually guards config, not
+     behavior — flag it and ask what real regression it catches. Correct-but-
+     pointless is an Important finding, not a pass.
    - **Correctness** — bugs, wrong logic, unhandled errors and edge cases, race
      conditions, broken contracts with callers.
    - **Security** — injection, authz/authn gaps, unsafe input handling, and any
@@ -56,7 +63,12 @@ When invoked:
        - restates what the code already shows — the literal value, the emitted
          output, or the variable being set;
        - reads like an investigation log or a chain of "X, so Y, which Z";
-       - bundles several facts where only one is load-bearing.
+       - bundles several facts where only one is load-bearing;
+       - is written for the implementer, the ticket, or the review process rather
+         than the next reader — references a task/step, says "documentation only",
+         or narrates what this change did instead of what the code means. The same
+         applies to test names and descriptions. A comment must help whoever reads
+         the code next; if it only talks to the author or the agent, cut it.
      When you flag one, propose the minimal why-only rewrite — don't just say
      "shorten it".
 5. **Stay read-only.** Do not edit code, do not run the test suite or linter, do
