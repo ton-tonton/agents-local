@@ -14,23 +14,16 @@ Maintain a curated set of AI agent skills that can be:
 
 ```
 agents-local/
-├── skills.yaml              # Skill manifest and sync configuration
+├── skills.yaml               # Skill manifest and sync configuration
 ├── scripts/
-│   └── sync_skills.py      # Automated sync utility
-├── agents/                  # [LOCAL] Subagent definitions
-│   ├── erwin.md            # Rough request → structured task
-│   ├── eren.md             # Version-aware Rails worker
-│   └── levi.md             # Read-only code reviewer
-├── skills/                  # Skill collection
-│   ├── cooking/            # [LOCAL] Orchestrator (work item → … → PR)
-│   ├── ship-it/            # [LOCAL] Test-first implementation loop
-│   ├── azure-pr/           # [LOCAL] Azure DevOps PR creation
-│   ├── push-pr/            # [LOCAL] PR description + open (host-agnostic)
-│   ├── code-review-excellence/
-│   ├── ui-ux-pro-max/
-│   └── ...                 # Additional synced skills
-└── .claude/
-    └── settings.local.json # Claude-specific configuration
+│   └── sync_skills.py        # Automated sync utility
+├── agents/                   # [LOCAL] Subagent definitions
+│   ├── erwin.md              # Rough request → structured task
+│   └── ...                   # Additional agents
+├── skills/                   # Skill collection
+│   ├── cooking/              # [LOCAL] Orchestrator (work item → … → PR)
+│   └── ...                   # Additional synced skills
+
 ```
 
 ## 🔧 Key Components
@@ -77,7 +70,7 @@ Worker subagents dispatched from the main session via the `Agent` tool. The `coo
 - **eren** ⭐ *LOCAL* - Version-aware Rails implementation worker (Rails 7.x/8.x, Hotwire, Solid Queue)
 - **levi** ⭐ *LOCAL* - Read-only code reviewer; reports findings with a verdict, never edits
 
-> **Pattern: thin subagent + rich skills.** Agent files stay small ("do this workflow") and pull in skills for the real knowledge. `eren` loads `rails-way` (patterns) + `ship-it` (test-first loop) at runtime instead of embedding them — so that knowledge stays reusable in the main session too.
+> **Pattern: thin subagent + rich skills.** Agent files stay small ("do this workflow") and pull in skills for the real knowledge. `eren` loads `rails-way` (patterns) + `tdd` (test-first loop) at runtime instead of embedding them — so that knowledge stays reusable in the main session too.
 
 ### 4. Skill Categories
 
@@ -109,7 +102,7 @@ Worker subagents dispatched from the main session via the `Agent` tool. The `coo
 - **vulnerability-scanner** - Security analysis (OWASP 2025)
 
 #### Process & Planning
-- **ship-it** ⭐ *LOCAL* - Stack-agnostic test-first implementation loop, custom from `workflow-patterns`
+- **tdd** ⭐ *LOCAL* - Stack-agnostic test-first implementation loop, custom from `workflow-patterns`
 - **cooking** ⭐ *LOCAL* - Orchestrates Azure work item → plan → build → test → review → PR (tracks state + time)
 - **planning** ⭐ *LOCAL* - Atomic task planning, custom from `concise-planning`, `plan-writing`
 - **prompt-engineering** - Prompt optimization techniques

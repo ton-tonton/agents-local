@@ -19,7 +19,7 @@ There is no build, test, or lint setup — verification means re-running the syn
 **Two kinds of skills, distinguished by whether they appear in `skills.yaml`:**
 
 - **Synced skills** — listed under `skills:` in `skills.yaml`. `sync_skills.py` mirrors them from an upstream `path` into `skills/<name>/` using `rsync -av --delete`. **Local edits to these are destroyed on next sync** — change them upstream instead.
-- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `ship-it`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
+- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `tdd`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
 
 Before editing anything in `skills/`, check whether its name is in `skills.yaml`. If it is, edits are temporary.
 
@@ -35,12 +35,12 @@ Before editing anything in `skills/`, check whether its name is in `skills.yaml`
 
 **Pattern: thin subagent + rich skills.** An agent file stays small and just says
 "do this workflow"; the real knowledge lives in skills it pulls in. `eren`
-is thin — it has the `Skill` tool and loads `rails-way` (patterns) + `ship-it`
+is thin — it has the `Skill` tool and loads `rails-way` (patterns) + `tdd`
 (test-first loop) at runtime rather than embedding them. `levi` is the
 same shape: thin worker, loads `code-review-excellence` at runtime. This keeps the
 knowledge reusable in the main session too, and the agent easy to read.
 
-These are worker subagents, dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end from a **plain request or an optional Azure work item link**: understand the goal (the request, or `azure-task` to load a linked item) → plan (`planning`) → build (`eren`, following `ship-it`) → test → review (`levi` subagent loading `code-review-excellence`, read-only; fixes go back to the worker) → PR (`push-pr`). It tracks state + completed time only when the link is a Task; a story or a no-link run is built but not tracked. The orchestrator lives as a **skill**, not an agent, because only the main session can reliably dispatch subagents.
+These are worker subagents, dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end from a **plain request or an optional Azure work item link**: understand the goal (the request, or `azure-task` to load a linked item) → plan (`planning`) → build (`eren`, following `tdd`) → test → review (`levi` subagent loading `code-review-excellence`, read-only; fixes go back to the worker) → PR (`push-pr`). It tracks state + completed time only when the link is a Task; a story or a no-link run is built but not tracked. The orchestrator lives as a **skill**, not an agent, because only the main session can reliably dispatch subagents.
 
 ## Conventions
 

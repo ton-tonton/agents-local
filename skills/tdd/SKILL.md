@@ -1,5 +1,5 @@
 ---
-name: ship-it
+name: tdd
 description: Stack-agnostic implementation workflow. Drives a single task through a test-first loop — write a failing test, implement to green, refactor, gate on tests + lint, commit, update the plan. Use when implementing tasks in any project (Rails, Node, Python, Go, etc.).
 ---
 

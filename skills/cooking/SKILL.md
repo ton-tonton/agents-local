@@ -40,7 +40,7 @@ Loop-backs: step 2 retries on red (≤3); step 3 sends fixes back to step 2 (fre
 - **Never edit code yourself.** Delegate *all* code changes to the worker — first
   build and review fixes alike. You hold intent and gate; you never touch the code.
 - **Delegate commits and the push too.** The worker commits each green task itself
-  (`ship-it` → `commit`); `push-pr` runs the final `git push` and opens the PR.
+  (`tdd` → `commit`); `push-pr` runs the final `git push` and opens the PR.
 - **Gate on evidence, not vibes.** "Done" means tests pass with real output — never
   a subagent's say-so. **Never push on red.** Confidence = green tests + clean review.
 - **Cap each fix loop at 3 tries.** If still red, stop and report. Do not thrash.
@@ -98,14 +98,14 @@ Then, before building:
 Each round:
 
 1. **Dispatch the dev worker.**
-   - **Rails** → dispatch `eren`. It loads `rails-way` + `ship-it` itself and builds
+   - **Rails** → dispatch `eren`. It loads `rails-way` + `tdd` itself and builds
      test-first — you don't tell it how.
-   - **Other stacks** → dispatch a worker that uses the `ship-it` skill.
+   - **Other stacks** → dispatch a worker that uses the `tdd` skill.
 
    Pass only what lives in context: the goal, the plan file path + which task, and —
    if retrying — the exact failure. The worker reads the code from disk.
 2. **Run the gate yourself** via `Bash` — no subagent. Use the project's real test +
-   lint commands (the ones `ship-it` step 0 detects, e.g. `bundle exec rspec` +
+   lint commands (the ones `tdd` step 0 detects, e.g. `bundle exec rspec` +
    `bundle exec rubocop` for Rails). Capture the real output.
 3. **Decide:**
    - **Green** → exit the loop.
@@ -174,7 +174,7 @@ rest; use any piece without `cooking`.
 | `levi`                   | subagent | Yes — review any diff, get a verdict  |
 | `rails-way`              | skill    | Yes — Rails patterns, in any session  |
 | `planning`               | skill    | Yes — "plan this"                     |
-| `ship-it`                | skill    | Yes — implement a task yourself       |
+| `tdd`                    | skill    | Yes — implement a task yourself       |
 | `code-review-excellence` | skill    | Yes — review any diff (what `levi` loads) |
 | `azure-task`             | skill    | Yes — read/update any work item       |
 | `push-pr`                | skill    | Yes — open a PR (any host)            |

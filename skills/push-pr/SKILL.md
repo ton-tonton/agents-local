@@ -6,9 +6,8 @@ allowed-tools: Read, Bash, Skill
 
 # Generate and Open PR
 
-Write a clear, concise PR description, then open the pull request with the
-**host's** PR skill. This skill is host-agnostic: it decides *what to say*; the
-host skill decides *how to send it*.
+Write a clear, concise PR description, then open the pull request with the **host's** PR skill.
+This skill is host-agnostic: it decides *what to say*; the host skill decides *how to send it*.
 
 ## Use this skill when
 
@@ -23,76 +22,69 @@ host skill decides *how to send it*.
    ```
    - `dev.azure.com` / `visualstudio.com` → use the **`azure-pr`** skill to open.
    - Any other host → stop and tell the user no opener is wired for that host yet.
-2. **Pick the base branch.** Use what the user specified. If they didn't, detect
-   the repo's default branch and confirm it:
+2. **Pick the base branch.** Use what the user specified. If they didn't, detect the repo's default branch and confirm it:
    ```bash
    git remote show origin | sed -n 's/.*HEAD branch: //p'
    ```
    Don't assume `main` vs `develop` — different repos differ.
 3. **Push the current branch**: `git push` so the remote branch is up to date.
-4. **Check for a PR template** (host-dependent location, e.g.
-   `.azuredevops/pull_request_template.md`). If present, read it and follow its
-   sections instead of the default format below.
-5. **Review the changes**:
+4. **Check for a PR template** (host-dependent location, e.g. `.azuredevops/pull_request_template.md`). If present, read it and follow its sections instead of the default format below.
+5. **Review the changes** — exclude dependency lock files; they're noise:
    ```bash
-   git diff <base>...HEAD
+   git diff <base>...HEAD -- . ':(exclude)*.lock' ':(exclude)package-lock.json' ':(exclude)pnpm-lock.yaml'
    git log  <base>...HEAD
    ```
-6. **Generate the description** — list only the important changes. Skip whitespace,
-   formatting, and trivial refactors. Keep it under ~2000 characters.
-7. **Open the PR** by invoking the host skill from step 1 with the title,
-   description, and base branch (e.g. the `azure-pr` skill for Azure Repos).
-   If you were given a work item / issue ID, pass it so the opener links it
-   (Azure: `--work-items <ID>`).
+6. **Generate the description** — list only the important changes. Skip whitespace, formatting, and trivial refactors. Keep it under ~2000 characters.
+7. **Open the PR** by invoking the host skill from step 1 with the title, description, and base branch (e.g. the `azure-pr` skill for Azure Repos). If you were given a work item / issue ID, pass it so the opener links it (Azure: `--work-items <ID>`).
 
 ## Output Format
 
 ```markdown
 ## Summary
-
-[1-2 sentence executive summary of what this PR accomplishes]
+[1-3 short sentences — what this PR does and what stays out of scope. One idea per sentence.]
 
 ## What Changed
-
-### Source Code
-- Changed/Added/Refactored specific components
-- List key modifications with file references
-
-### Documentation
-- Updated docs, README, or comments
-
-### Configuration
-- Modified config, dependencies, or settings
+- **[Theme]**
+  - [<verb> <what> — one fact, no trailing clause]
+  - [<verb> <what> — one fact, no trailing clause]
+- **[Theme]**
+  - [<verb> <what> — one fact, no trailing clause]
 ```
+
+## Do not include
+
+Never add these sections — CI reports them, not the PR:
+**Tests, Verification, Test Plan, How to test, Checklist.**
 
 ## Guidelines
 
 - **Check for a template first** and adapt to its format if present.
-- **Focus on what changed**: list functional changes, not rationale.
-- **Be brief**: only important changes; skip trivial updates.
-- **Use file references**: name specific files/functions that changed.
-- **Group related changes** and keep bullets scannable.
+- **Group by theme**, not by file type. Use buckets like the area of the app or kind of work (e.g. "Auth", "Routes").
+- **One change per bullet**, as a short fragment. No "and ... and" chains.
+- **Terse bullets.** Write each as `<verb> <what>` — one fact. Drop trailing how/why clauses.
+- **Keep sentences short** — aim ≤ 15 words. Write for fast scanning.
+- **No process framing.** Reviewers read the final diff, not your history. Drop "round 1", "latest round", "after feedback", etc.
+- **Keep facts, cut prose.** Cut the explanation around them, not the fact itself.
+- **Ignore lock files.** Never mention dependency lock files (`Gemfile.lock`, `yarn.lock`, `package-lock.json`, `pnpm-lock.yaml`, etc.). They're auto-generated noise.
+- **Focus on what changed**, not rationale. Add a one-line "why" only when the change is surprising.
 
 ## Example
 
 ### Generated description
 ```markdown
 ## Summary
-
-Adds JWT-based authentication middleware to protect API endpoints, replacing
-session-based auth for better scalability.
+Adds JWT auth middleware to protect API endpoints. Replaces session-based auth for better scaling.
 
 ## What Changed
-
-### Source Code
-- Added `AuthMiddleware.ts` with JWT validation
-- Updated `routes/api.ts` to use auth middleware
-- Refactored `UserController.ts` for JWT token generation
-- Removed legacy `SessionManager.ts` code
-
-### Documentation
-- Updated API docs with auth requirements
+- **Auth**
+  - Add `AuthMiddleware` for JWT validation
+  - Issue JWT tokens from `UserController`
+  - Remove legacy `SessionManager`
+- **Routes**
+  - Apply auth middleware to API routes
+- **Docs**
+  - Document auth requirements
+<!-- no Tests/Verification section — CI covers it -->
 ```
 
-Then hand the title + this description + base branch to the host's PR skill
-(`azure-pr` for Azure Repos), which runs the actual create command.
+Then hand the title + this description + base branch to the host's PR skill (`azure-pr` for Azure Repos), which runs the actual create command.
