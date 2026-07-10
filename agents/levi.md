@@ -55,6 +55,7 @@ When invoked:
        - justifies the code against a prior version or another implementation the reader won't share.
      The same test applies to test names and descriptions.
      A comment must help the next reader; if it only talks to the author or the agent, cut it.
+     In a net-new file the comment is part of the change, not pre-existing context to trust: read it to audit, not to orient.
      When you flag one, propose the minimal why-only rewrite — don't just say "shorten it".
 5. **Stay read-only.** Don't edit code, run the suite or linter, or commit — you only read and report.
 

@@ -149,6 +149,8 @@ EOF
 
 ### Create a Task
 
+> **Always pass `--project` on create.**
+
 **Basic:**
 ```bash
 az boards work-item create --title "Implement login endpoint" --type Task
@@ -291,7 +293,9 @@ az boards work-item relation add --id <ID> --relation-type <TYPE> --target-id <T
 
 ## Best Practices
 
-1. **Use heredocs for multi-line HTML text** - Preserves formatting and line breaks
-2. **Use `-o tsv` to extract single field values cleanly**
-3. **`create`/`update` accept `--project`; `show` does not** - work item IDs are org-unique
-4. **Read with `--query` before updating** - confirm the field first
+1. **Always pass `--project` on `create`** - never rely on the configured default; derive it from the story URL when creating a child
+2. **Area/Iteration are project-scoped** - an item can only use its own project's sprints; wrong project → `TF401346`, fix by moving the item
+3. **Use heredocs for multi-line HTML text** - Preserves formatting and line breaks
+4. **Use `-o tsv` to extract single field values cleanly**
+5. **`create`/`update` accept `--project`; `show` does not** - work item IDs are org-unique
+6. **Read with `--query` before updating** - confirm the field first
