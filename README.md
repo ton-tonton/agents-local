@@ -18,7 +18,7 @@ agents-local/
 ├── scripts/
 │   └── sync_skills.py        # Automated sync utility
 ├── agents/                   # [LOCAL] Subagent definitions
-│   ├── erwin.md              # Rough request → structured task
+│   ├── eren.md               # Rails implementation worker
 │   └── ...                   # Additional agents
 ├── skills/                   # Skill collection
 │   ├── cooking/              # [LOCAL] Orchestrator (work item → … → PR)
@@ -66,7 +66,6 @@ python3 scripts/sync_skills.py
 
 Worker subagents dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end.
 
-- **erwin** ⭐ *LOCAL* - Turns a rough request into a structured, developer-ready task
 - **eren** ⭐ *LOCAL* - Version-aware Rails implementation worker (Rails 7.x/8.x, Hotwire, Solid Queue)
 - **levi** ⭐ *LOCAL* - Read-only code reviewer; reports findings with a verdict, never edits
 
@@ -87,6 +86,7 @@ Worker subagents dispatched from the main session via the `Agent` tool. The `coo
 - **push-pr** ⭐ *LOCAL* - Host-agnostic PR description + open (delegates to the host opener)
 - **azure-pr** ⭐ *LOCAL* - Azure CLI PR automation (opener for Azure Repos)
 - **azure-task** ⭐ *LOCAL* - Manage Azure DevOps work items
+- **write-task** ⭐ *LOCAL* - Rough request → developer-ready task/story, printed in chat for review (`azure-task` puts it on the board)
 - **comprehensive-review-pr-enhance** - Detailed PR descriptions
 
 #### Design & Frontend

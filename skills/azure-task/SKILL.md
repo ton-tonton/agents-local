@@ -123,6 +123,14 @@ az boards work-item update --id <WORK_ITEM_ID> \
   --fields "System.Description=Updated description text"
 ```
 
+### From a Markdown Draft
+
+Turning a written draft (e.g. from `write-task`) into a work item:
+
+- **The title travels alone.** A leading `**Title:**` line becomes `--title`; drop it from the description body.
+- **Convert the Markdown to HTML** — the description field is rich text, so `##` renders literally. `## Heading` → `<b>Heading</b><br>`, bullet → `<li>` inside `<ul>` (or `• …<br>`), blank line → `<br><br>`. Send it through a quoted heredoc so the markup survives.
+- **`--description` replaces the whole field** — read the current value before updating an existing item.
+
 ### Add Comment to Task
 
 **Simple comment:**

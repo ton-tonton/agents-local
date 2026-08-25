@@ -19,7 +19,7 @@ There is no build, test, or lint setup — verification means re-running the syn
 **Two kinds of skills, distinguished by whether they appear in `skills.yaml`:**
 
 - **Synced skills** — listed under `skills:` in `skills.yaml`. `sync_skills.py` mirrors them from an upstream `path` into `skills/<name>/` using `rsync -av --delete`. **Local edits to these are destroyed on next sync** — change them upstream instead.
-- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `tdd`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
+- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `tdd`, `write-task`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
 
 Before editing anything in `skills/`, check whether its name is in `skills.yaml`. If it is, edits are temporary.
 
@@ -29,7 +29,6 @@ Before editing anything in `skills/`, check whether its name is in `skills.yaml`
 
 **Agents** (`agents/*.md`): subagent definitions with YAML frontmatter — `name`, `description`, `model` (`inherit`/`sonnet`/`opus`/`haiku`), optional `tools` (array, e.g. `["Read", "Grep"]`; omit for all), optional `color`. A file is a subagent because it lives in `agents/` — there is no `mode` field. Current agents:
 
-- `erwin` — turns a rough request into a structured, developer-ready task.
 - `eren` — version-aware Rails implementation worker (adapts to Rails 7.x/8.x).
 - `levi` — read-only code reviewer; reports findings with a verdict, never edits.
 
