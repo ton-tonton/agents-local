@@ -1,108 +1,38 @@
 ---
 name: tdd
-description: Stack-agnostic implementation workflow. Drives a single task through a test-first loop — write a failing test, implement to green, refactor, gate on tests + lint, commit, update the plan. Use when implementing tasks in any project (Rails, Node, Python, Go, etc.).
+description: Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests.
 ---
 
-# Ship It — Implementation Workflow
+# Test-Driven Development
 
-Implement one task at a time with a fast, test-first loop:
-write the test → make it pass → refactor → gate → commit → repeat.
+TDD is the red → green loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle: consult them before and during the loop, not after.
 
-Stack-agnostic. Detect this project's commands first (below); the loop is the same
-everywhere.
+When exploring the codebase, read `CONTEXT.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
-## 0. Detect project commands (do this first)
+## What a good test is
 
-Don't assume the toolchain. Find the real test and lint commands:
+Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification: "user can checkout with valid cart" tells you exactly what capability exists, and it survives refactors because it doesn't care about internal structure.
 
-- **Ruby/Rails** → `bundle exec rspec`, `bundle exec rubocop`
-- **Node** → check `package.json` scripts (`npm test`, `npm run lint`)
-- **Python** → `pytest`, `ruff`/`flake8` (check `pyproject.toml` / `Makefile`)
-- **Go** → `go test ./...`, `go vet`
-- **Anything** → check `Makefile`, CI config, or `AGENTS.md` for the canonical commands
+See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
 
-Use what the project actually uses. The examples below show Ruby; substitute yours.
+## Seams: where tests go
 
-## Instructions
+A **seam** is the public boundary you test at: the interface where you observe behavior without reaching inside. Tests live at seams, never against internals.
 
-- Clarify goals, constraints, and required inputs.
-- If unsure about syntax or APIs, look it up (e.g. the `context7` MCP server).
+**Test only at pre-agreed seams.** Before writing any test, write down the seams under test and confirm them with the user. No test is written at an unconfirmed seam. You can't test everything, so agreeing the seams up front is how testing effort lands on the critical paths and complex logic instead of every edge case.
 
-**`$PLAN_FILE`** = the plan file you were given, or — if none — the most recent
-`.agent/plans/*.md`. Follow this cycle for each task in `$PLAN_FILE`.
+Ask: "What's the public interface, and which seams should we test?"
 
-### 1. Select task
+When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface should expose), call the Skill tool with "codebase-design" for the vocabulary. It is the shared source of the module, interface, depth, seam, adapter, leverage and locality terms, and it is a reference to consult, not a session to run.
 
-1. Pick the next pending `[ ]` task from `$PLAN_FILE`.
-2. Mark it in-progress `[~]`.
+## Anti-patterns
 
-### 2. Fast development cycle
+- **Implementation-coupled**: mocks internal collaborators, tests private methods, or verifies through a side channel (querying the database instead of using the interface). The tell: the test breaks when you refactor but behavior hasn't changed.
+- **Tautological**: the assertion recomputes the expected value the way the code does (`expect(add(a, b)).toBe(a + b)`, a snapshot derived by hand the same way, a constant asserted equal to itself), so it passes by construction and can never disagree with the code. Expected values must come from an independent source of truth: a known-good literal, a worked example, the spec.
+- **Horizontal slicing**: writing all tests first, then all implementation. Bulk tests verify _imagined_ behavior: you test the _shape_ of things rather than user-facing behavior, the tests go insensitive to real changes, and you commit to test structure before understanding the implementation. Work in **vertical slices** instead: one test → one implementation → repeat, each test a **tracer bullet** that responds to what the last cycle taught you.
 
-**Test first — define behavior.**
-Write the test before the implementation. Scope it to the code *this task* adds —
-not whole-app coverage.
+## Rules of the loop
 
-- Cover the happy path, the error/validation path, and meaningful edge cases.
-- Run the test — it should **fail (red)**, proving it exercises new behavior.
-
-```ruby
-# Example (Ruby/RSpec) — substitute your stack's test framework
-describe User do
-  it "rejects an invalid email" do
-    user = User.new(email: "bad-format")
-    expect(user).not_to be_valid
-    expect(user.errors[:email]).to include("is invalid")
-  end
-end
-```
-
-> **Exception — prototype then lock.** When test-first is awkward (migrations,
-> generators, spikes, config), build the prototype first, then write tests that
-> pin the resulting behavior **before** the commit. The green-commit gate still holds.
-
-**Implement.** Write the minimum code to make the test pass. No premature
-optimization. Run the test — it should now **pass (green)**.
-
-**Refactor.** Improve naming, remove duplication, simplify. Run the test — still green.
-
-### 3. Gate & finalize
-
-**Gate** — run the project's real commands:
-- Full test suite (e.g. `bundle exec rspec`)
-- Linter (e.g. `bundle exec rubocop`)
-
-**Commit & update** — only after the suite is green:
-1. Create the commit with the `commit` skill — it owns the message format, branch
-   safety, and the Co-Authored-By trailer. One focused commit per task, including
-   both the tests and the implementation. Don't write the commit by hand.
-2. Mark the task `[x]` in `$PLAN_FILE` and append the short commit SHA.
-   ```markdown
-   - [x] **Task 2.1**: Implement user validation `abc1234`
-   ```
-
-### 4. Iterate
-
-Return to step 1 for the next task.
-
-## Quality gates
-
-- **Tests pass**: the full suite is green.
-- **Style**: no linter offenses.
-- **Security**: no hardcoded secrets — use env vars or a secrets manager.
-
-## Error recovery
-
-**Tests fail after refactoring:** find which test broke, check the recent change,
-revert to the last green state, re-approach.
-
-**Can't reach green after ~2–3 tries:** stop thrashing.
-1. Revert to the last green state.
-2. Reassess — the task may be mis-scoped or a plan assumption may be wrong.
-3. Surface the blocker (or ask) before looping on the same fix.
-
-## Working with existing tests
-
-- **Extend, don't replace.** Keep existing tests passing; add new ones for new behavior.
-- Update existing tests only when requirements actually change.
-- When refactoring changes structure: run existing tests (green) → add new tests →
-  migrate cases → remove old tests only after the new ones pass.
+- **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
+- **One slice at a time.** One seam, one test, one minimal implementation per cycle.
+- **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
