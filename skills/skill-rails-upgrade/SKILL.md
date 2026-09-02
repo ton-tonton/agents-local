@@ -224,6 +224,11 @@ List the most important changes the user needs to handle:
 ---
 
 
+### When to Use This Skill
+
+Analyze Rails apps and provide upgrade assessments
+
+Use this skill when working with analyze rails apps and provide upgrade assessments.
 ## Step 9: Selective File Update (replaces `rails app:update`)
 
 **IMPORTANT:** Do NOT run `rails app:update` as it overwrites files without considering local customizations. Instead, follow this selective merge process:
@@ -383,6 +388,11 @@ After verifying the app works:
 ---
 
 
+### When to Use This Skill
+
+Analyze Rails apps and provide upgrade assessments
+
+Use this skill when working with analyze rails apps and provide upgrade assessments.
 ## Error Handling
 
 - If `gh` CLI is not authenticated, instruct the user to run `gh auth login`

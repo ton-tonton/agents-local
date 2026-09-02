@@ -25,6 +25,8 @@ Before editing anything in `skills/`, check whether its name is in `skills.yaml`
 
 **`sync_skills.py` resolution order** for each skill name: the per-entry `path` (tried as `path/<name>` then as a direct path), then a global `upstream_path` (string or list). Missing sources warn and skip rather than fail the run.
 
+**`skills.lock`** records the skill names synced on the last run. On each run, names in the lock file that are no longer in `skills.yaml` have their `skills/<name>/` directory deleted; local skills are never in the lock file, so they are never touched. Commit `skills.lock` alongside `skills.yaml`. Use `python3 scripts/sync_skills.py --dry-run` to preview deletions and syncs without changing anything.
+
 **Skill format:** each `skills/<name>/SKILL.md` starts with YAML frontmatter (`name`, `description`) followed by the skill body. Some skills carry supporting `data/` and `scripts/` subdirectories (e.g. `ui-ux-pro-max`).
 
 **Agents** (`agents/*.md`): subagent definitions with YAML frontmatter — `name`, `description`, `model` (`inherit`/`sonnet`/`opus`/`haiku`), optional `tools` (array, e.g. `["Read", "Grep"]`; omit for all), optional `color`. A file is a subagent because it lives in `agents/` — there is no `mode` field. Current agents:

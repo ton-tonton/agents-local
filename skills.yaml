@@ -3,19 +3,11 @@
 skills:
   - path: /Users/tontonton/agents/antigravity-awesome-skills/skills
     name:
-      - angular
       - angular-best-practices
       - code-documentation-code-explain
       - code-review-excellence
-      - comprehensive-review-pr-enhance
       - docker-expert
-      - frontend-design
-      - kaizen
-      - mermaid-expert
       - postgres-best-practices
-      - prompt-engineering
       - skill-rails-upgrade
       - tailwind-design-system
-      - ui-ux-pro-max
       - vulnerability-scanner
-      - youtube-summarizer

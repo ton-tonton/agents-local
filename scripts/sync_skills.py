@@ -1,13 +1,75 @@
+import json
 import yaml
 import os
+import shutil
 import subprocess
 import sys
+
+# Records the skill names synced on the last run, so the next run can tell
+# "removed from skills.yaml" apart from "local skill, never synced".
+MANIFEST_NAME = 'skills.lock'
 
 def load_config(config_path):
     with open(config_path, 'r') as file:
         return yaml.safe_load(file)
 
-def sync_skills():
+def load_manifest(manifest_path):
+    """Return the skill names synced last run, or None if there is no usable manifest."""
+    if not os.path.exists(manifest_path):
+        return None
+
+    try:
+        with open(manifest_path, 'r') as file:
+            data = json.load(file)
+    except (OSError, ValueError) as e:
+        print(f"Warning: could not read {MANIFEST_NAME} ({e}); skipping cleanup")
+        return None
+
+    names = data.get('synced') if isinstance(data, dict) else data
+    if not isinstance(names, list):
+        print(f"Warning: unexpected format in {MANIFEST_NAME}; skipping cleanup")
+        return None
+
+    return [name for name in names if isinstance(name, str)]
+
+def save_manifest(manifest_path, names):
+    payload = {'synced': sorted(set(names))}
+    try:
+        with open(manifest_path, 'w') as file:
+            json.dump(payload, file, indent=2)
+            file.write('\n')
+    except OSError as e:
+        print(f"Warning: could not write {MANIFEST_NAME}: {e}")
+
+def prune_removed_skills(skills_dir, manifest_path, current_names, dry_run):
+    """Delete skill dirs that were synced before but are no longer in skills.yaml."""
+    previous_names = load_manifest(manifest_path)
+    if previous_names is None:
+        return
+
+    stale = sorted(set(previous_names) - set(current_names))
+
+    for skill_name in stale:
+        # Guard against a manifest entry escaping the skills dir
+        if not skill_name or os.path.sep in skill_name or skill_name in ('.', '..'):
+            print(f"Warning: skipping unsafe manifest entry: {skill_name!r}")
+            continue
+
+        dest = os.path.join(skills_dir, skill_name)
+        if not os.path.isdir(dest):
+            continue
+
+        if dry_run:
+            print(f"[dry-run] would delete {dest}")
+            continue
+
+        try:
+            shutil.rmtree(dest)
+            print(f"- {skill_name} (removed from skills.yaml)")
+        except OSError as e:
+            print(f"✗ Failed to delete {skill_name}: {e}")
+
+def sync_skills(dry_run=False):
     # scripts/ is usually one level deep from root
     workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     config_path = os.path.join(workspace_root, 'skills.yaml')
@@ -67,6 +129,11 @@ def sync_skills():
             else:
                 print(f"Warning: Invalid 'name' in skill entry: {entry}")
 
+    configured_names = [item['name'] for item in skills_to_sync]
+    manifest_path = os.path.join(workspace_root, MANIFEST_NAME)
+
+    prune_removed_skills(skills_dir, manifest_path, configured_names, dry_run)
+
     print(f"Syncing {len(skills_to_sync)} skills...")
 
     for item in skills_to_sync:
@@ -103,6 +170,10 @@ def sync_skills():
             print(f"Warning: Source skill '{skill_name}' not found (explicit path: {skill_path})")
             continue
 
+        if dry_run:
+            print(f"[dry-run] would sync {source} -> {dest}")
+            continue
+
         # Create destination directory if it doesn't exist
         if not os.path.exists(dest):
             os.makedirs(dest)
@@ -124,5 +195,12 @@ def sync_skills():
         except subprocess.CalledProcessError as e:
             print(f"✗ Failed to sync {skill_name}: {e.stderr}")
 
+    # Track the configured names (not just the ones that synced cleanly), so a
+    # temporarily missing source is not mistaken for a removal on the next run.
+    if dry_run:
+        print(f"[dry-run] would write {manifest_path}")
+    else:
+        save_manifest(manifest_path, configured_names)
+
 if __name__ == "__main__":
-    sync_skills()
+    sync_skills(dry_run='--dry-run' in sys.argv[1:])
