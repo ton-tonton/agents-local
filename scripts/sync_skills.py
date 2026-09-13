@@ -107,8 +107,9 @@ def sync_skills(dry_run=False):
     # Validate global paths
     valid_paths = []
     for path in upstream_paths:
-        if os.path.isdir(path):
-            valid_paths.append(path)
+        expanded = os.path.expanduser(path)
+        if os.path.isdir(expanded):
+            valid_paths.append(expanded)
         else:
             print(f"Warning: Global upstream path does not exist: {path}")
 
@@ -161,6 +162,7 @@ def sync_skills(dry_run=False):
 
         # 1. Try explicit path if provided
         if skill_path:
+            skill_path = os.path.expanduser(skill_path)
             # If path ends with skill_name, assume it's the full path to the skill folder
             # If not, assume it's the parent folder (similar to upstream_path behavior)
             candidate = os.path.join(skill_path, skill_name)

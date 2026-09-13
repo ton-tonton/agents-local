@@ -4,12 +4,28 @@ skills:
     name:
       - angular-best-practices
       - code-documentation-code-explain
-      - code-review-excellence
       - docker-expert
       - postgres-best-practices
       - skill-rails-upgrade
       - tailwind-design-system
       - vulnerability-scanner
+
+  - path: /Users/tontonton/agents/.agents/skills
+    name:
+      - codebase-design
+      - code-review
+      - domain-modeling
+      - grill-with-docs
+      - grilling
+      - handoff
+      - implement
+      - setup-matt-pocock-skills
+      - tdd
+      - teach
+      - to-spec
+      - to-tickets
+      - triage
+      - writing-for-agents
 
 # Local skills authored in this repository
 local_skills:
@@ -20,5 +36,4 @@ local_skills:
   - planning
   - push-pr
   - rails-way
-  - tdd
   - write-task
