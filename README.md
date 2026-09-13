@@ -15,15 +15,11 @@ Maintain a curated set of AI agent skills that can be:
 ```
 agents-local/
 ├── skills.yaml               # Skill manifest and sync configuration
+├── skills.lock               # Tracked synced skills lockfile
 ├── scripts/
 │   └── sync_skills.py        # Automated sync utility
-├── agents/                   # [LOCAL] Subagent definitions
-│   ├── eren.md               # Rails implementation worker
-│   └── ...                   # Additional agents
-├── skills/                   # Skill collection
-│   ├── cooking/              # [LOCAL] Orchestrator (work item → … → PR)
-│   └── ...                   # Additional synced skills
-
+├── agents/                   # Subagent definitions (*.md)
+└── skills/                   # Skill collection (<skill-name>/SKILL.md)
 ```
 
 ## 🔧 Key Components
@@ -34,11 +30,10 @@ Defines which skills to sync and their source locations:
 
 ```yaml
 skills:
-  - path: /Users/tontonton/agents/antigravity-awesome-skills/skills
+  - path: /path/to/upstream/skills
     name:
-      - code-review-excellence
-      - ui-ux-pro-max
-      - docker-expert
+      - skill-1
+      - skill-2
       # ... more skills
 ```
 
@@ -64,51 +59,19 @@ python3 scripts/sync_skills.py
 
 ### 3. Agents (agents/*.md)
 
-Worker subagents dispatched from the main session via the `Agent` tool. The `cooking` skill orchestrates them end-to-end.
+Subagent definitions live in this directory as Markdown files (`agents/<name>.md`).
 
-- **eren** ⭐ *LOCAL* - Version-aware Rails implementation worker (Rails 7.x/8.x, Hotwire, Solid Queue)
-- **levi** ⭐ *LOCAL* - Read-only code reviewer; reports findings with a verdict, never edits
+- Contains worker subagent definitions dispatched from the main session.
+- Each agent file defines its role, prompt instructions, and tool access via YAML frontmatter (`name`, `description`, `model`, `tools`).
+- Follows the **thin subagent + rich skills** pattern: agent files stay small and load skills at runtime for deep domain knowledge.
 
-> **Pattern: thin subagent + rich skills.** Agent files stay small ("do this workflow") and pull in skills for the real knowledge. `eren` loads `rails-way` (patterns) + `tdd` (test-first loop) at runtime instead of embedding them — so that knowledge stays reusable in the main session too.
+### 4. Skills (skills/<skill-name>)
 
-### 4. Skill Categories
+All agent skills live in this directory, each in its own subfolder:
 
-#### Development & Code Quality
-- **code-review-excellence** - Structured code review practices
-- **code-documentation-code-explain** - Generate clear code explanations
-- **commit** ⭐ *LOCAL* - Concise Conventional Commits (was Sentry upstream, now trimmed + owned here)
-- **kaizen** - Continuous improvement methodology
-- **mermaid-expert** - Generate Mermaid diagrams (flowcharts, ERDs)
-- **rails-way** ⭐ *LOCAL* - Version-aware Rails patterns (7.x/8.x), pulled in by the eren agent
-- **skill-rails-upgrade** - Analyze Rails apps and provide upgrade assessments
-
-#### Pull Request Management
-- **push-pr** ⭐ *LOCAL* - Host-agnostic PR description + open (delegates to the host opener)
-- **azure-pr** ⭐ *LOCAL* - Azure CLI PR automation (opener for Azure Repos)
-- **azure-task** ⭐ *LOCAL* - Manage Azure DevOps work items
-- **write-task** ⭐ *LOCAL* - Rough request → developer-ready task/story, printed in chat for review (`azure-task` puts it on the board)
-- **comprehensive-review-pr-enhance** - Detailed PR descriptions
-
-#### Design & Frontend
-- **ui-ux-pro-max** - Comprehensive UI/UX design system (50+ styles, 21 palettes)
-- **frontend-design** - Production-grade frontend patterns
-- **tailwind-design-system** - Tailwind CSS v4 best practices
-- **angular** - Modern Angular (v20+) expert (Signals, Standalone, Zoneless)
-- **angular-best-practices** - Angular performance optimization guide
-
-#### Infrastructure & Security
-- **docker-expert** - Container optimization and security
-- **postgres-best-practices** - Database performance tuning
-- **vulnerability-scanner** - Security analysis (OWASP 2025)
-
-#### Process & Planning
-- **tdd** ⭐ *LOCAL* - Stack-agnostic test-first implementation loop, custom from `workflow-patterns`
-- **cooking** ⭐ *LOCAL* - Orchestrates Azure work item → plan → build → test → review → PR (tracks state + time)
-- **planning** ⭐ *LOCAL* - Atomic task planning, custom from `concise-planning`, `plan-writing`
-- **prompt-engineering** - Prompt optimization techniques
-
-#### Content & Research
-- **youtube-summarizer** - Extract transcripts and generate detailed summaries from videos
+- Each skill is contained in `skills/<skill-name>/SKILL.md` (with optional supporting scripts, data, or reference files).
+- **Synced skills**: Mirrored from upstream repositories defined under `skills:` in `skills.yaml`.
+- **Local skills**: Authored and maintained directly in this repository (listed under `local_skills:` in `skills.yaml`).
 
 ## 🚀 Quick Start
 
@@ -158,6 +121,6 @@ python3 scripts/sync_skills.py
 ```
 
 **Add local skill:**
-1. Create `skills/my-custom-skill/SKILL.md`
-2. Do NOT add to skills.yaml
+1. Create `skills/<skill-name>/SKILL.md`
+2. Add `<skill-name>` under `local_skills:` in `skills.yaml`
 3. Commit to version control
