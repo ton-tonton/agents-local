@@ -41,24 +41,24 @@ def save_manifest(manifest_path, names):
     except OSError as e:
         print(f"Warning: could not write {MANIFEST_NAME}: {e}")
 
-def prune_removed_skills(skills_dir, manifest_path, current_names, dry_run):
-    """Delete skill dirs that were synced before but are no longer in skills.yaml."""
-    previous_names = load_manifest(manifest_path)
-    if previous_names is None:
+def prune_unlisted_skills(skills_dir, allowed_names, dry_run):
+    """Delete skill dirs in skills/ that are not listed in skills.yaml."""
+    if not os.path.isdir(skills_dir):
         return
 
-    stale = sorted(set(previous_names) - set(current_names))
+    existing = {
+        entry for entry in os.listdir(skills_dir)
+        if os.path.isdir(os.path.join(skills_dir, entry)) and not entry.startswith('.')
+    }
+    unlisted = sorted(existing - allowed_names)
 
-    for skill_name in stale:
-        # Guard against a manifest entry escaping the skills dir
+    for skill_name in unlisted:
+        # Guard against escaping the skills dir
         if not skill_name or os.path.sep in skill_name or skill_name in ('.', '..'):
-            print(f"Warning: skipping unsafe manifest entry: {skill_name!r}")
+            print(f"Warning: skipping unsafe skill name: {skill_name!r}")
             continue
 
         dest = os.path.join(skills_dir, skill_name)
-        if not os.path.isdir(dest):
-            continue
-
         if dry_run:
             print(f"[dry-run] would delete {dest}")
             continue
@@ -89,6 +89,11 @@ def sync_skills(dry_run=False):
 
     upstream_config = config.get('upstream_path')
     skills = config.get('skills', [])
+    local_config = config.get('local_skills', [])
+
+    local_names = []
+    if isinstance(local_config, list):
+        local_names = [s for s in local_config if isinstance(s, str)]
 
     # normalizing upstream_path to a list
     upstream_paths = []
@@ -111,6 +116,11 @@ def sync_skills(dry_run=False):
     if not os.path.exists(skills_dir):
         os.makedirs(skills_dir)
 
+    # Validate that declared local skills exist in skills/
+    for name in local_names:
+        if not os.path.isdir(os.path.join(skills_dir, name)):
+            print(f"Warning: Local skill '{name}' declared in skills.yaml does not exist in {skills_dir}")
+
     # Flatten skills list handling groups
     skills_to_sync = []
 
@@ -132,13 +142,20 @@ def sync_skills(dry_run=False):
     configured_names = [item['name'] for item in skills_to_sync]
     manifest_path = os.path.join(workspace_root, MANIFEST_NAME)
 
-    prune_removed_skills(skills_dir, manifest_path, configured_names, dry_run)
+    # Prune any skills in skills/ that are not listed in skills.yaml
+    allowed_names = set(configured_names) | set(local_names)
+    prune_unlisted_skills(skills_dir, allowed_names, dry_run)
 
-    print(f"Syncing {len(skills_to_sync)} skills...")
+    print(f"Syncing {len(skills_to_sync)} skills ({len(local_names)} local skills configured)...")
 
     for item in skills_to_sync:
         skill_name = item['name']
         skill_path = item['path']
+
+        # Guard against overwriting local skills
+        if skill_name in local_names:
+            print(f"Warning: '{skill_name}' is in both skills and local_skills; skipping sync to protect local skill")
+            continue
 
         source = None
 

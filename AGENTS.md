@@ -19,7 +19,7 @@ There is no build, test, or lint setup — verification means re-running the syn
 **Two kinds of skills, distinguished by whether they appear in `skills.yaml`:**
 
 - **Synced skills** — listed under `skills:` in `skills.yaml`. `sync_skills.py` mirrors them from an upstream `path` into `skills/<name>/` using `rsync -av --delete`. **Local edits to these are destroyed on next sync** — change them upstream instead.
-- **Local skills** — present in `skills/` but absent from `skills.yaml` (currently: `azure-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `tdd`, `write-task`). These are authored/owned here and version-controlled. `--delete` only touches directories the script syncs, so local skills are untouched.
+- **Local skills** — listed under `local_skills:` in `skills.yaml` (currently: `azure-pr`, `azure-task`, `commit`, `cooking`, `planning`, `push-pr`, `rails-way`, `tdd`, `write-task`). These are authored/owned here and version-controlled. Any directory in `skills/` not listed in `skills.yaml` (under `skills:` or `local_skills:`) is automatically deleted on sync.
 
 Before editing anything in `skills/`, check whether its name is in `skills.yaml`. If it is, edits are temporary.
 
