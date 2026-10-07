@@ -19,8 +19,6 @@ These CLI tools are installed — prefer them in shell commands:
 - Ask before large refactors, cross-file renames, or public interface changes.
 
 ## Safety
-- Never commit secrets — use env vars or a secrets manager.
 - Confirm before destructive or hard-to-reverse actions (history rewrites, force pushes, data drops, deleting files you didn't create).
 - Commit or push only when asked.
-- Report outcomes faithfully; if tests fail, show the output.
 
