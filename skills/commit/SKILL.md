@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Creates concise Conventional Commits; Trigger on any git commit.
+description: Creates concise Conventional Commits. Use for any git commit.
 ---
 
 # Commit
@@ -13,9 +13,8 @@ Create small, focused commits with a **concise** Conventional Commit message.
 git branch --show-current
 ```
 
-If on `main` or `master`, create a feature branch first — do **not** commit to
-the default branch unless the user explicitly asked to. Pick a short, descriptive
-branch name and confirm it with the user.
+If on `main` or `master`, stop and ask the user before committing, unless they
+already said to commit to the default branch.
 
 ## 2. Format
 
@@ -27,7 +26,8 @@ branch name and confirm it with the user.
 <optional footer>
 ```
 
-- **Subject**: imperative, capitalized, no period, ≤ 70 chars. Scope optional.
+- **Subject**: imperative, capitalized, no period. Short and clear: a reviewer
+  should grasp the change from the subject alone. Scope optional.
 - **Default to header only.** Most commits need no body.
 - **Add a body only when the "why" isn't obvious** — keep it to 1–3 short lines.
   Explain *why*, not *how*. Never restate the diff line by line.
@@ -50,24 +50,22 @@ branch name and confirm it with the user.
 | `revert` | Reverts |
 
 Use `!` after the type for a breaking change (e.g. `feat(api)!:`) and add a
-`BREAKING CHANGE:` footer line.
+`BREAKING CHANGE:` footer (see below).
 
 ## 4. Footer (optional)
 
-- **Issue ref** (only if there is one): `Refs AB#1234` (Azure Boards),
-  `Fixes #123` / `Refs GH-123` (GitHub). `Fixes` closes on merge; `Refs` links only.
-- **Always end AI-made commits with this exact trailer — and nothing else AI-related:**
-  ```
-  Co-Authored-By: [your model name] <noreply@[your provider]>
-  ```
+Add a footer line only for these cases:
+
+**Issue ref** — only when there is a known issue ID (from the user, or the task):
+`Refs <ID>`, with the ID exactly as given (e.g. `Refs AB#1234`, `Refs #123`).
+
+**Breaking change** — `BREAKING CHANGE: <what changed and how to migrate>`.
 
 ## Examples
 
 **Header only — most commits:**
 ```
 fix(api): Handle null user in dashboard endpoint
-
-Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 ```
 
 **Short why + issue ref — when it helps:**
@@ -77,10 +75,4 @@ feat(assets): Self-host Font Awesome 7 via npm
 Replaces the CDN kit so assets are fingerprinted by Propshaft.
 
 Refs AB#22117
-Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
 ```
-
-## Principles
-
-- Concise by default — a reviewer should grasp the change from the subject line.
-- Each commit is a single, independently reviewable, stable change.

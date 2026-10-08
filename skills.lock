@@ -1,25 +1,3 @@
 {
-  "synced": [
-    "angular-best-practices",
-    "code-documentation-code-explain",
-    "code-review",
-    "codebase-design",
-    "docker-expert",
-    "domain-modeling",
-    "grill-with-docs",
-    "grilling",
-    "handoff",
-    "implement",
-    "postgres-best-practices",
-    "setup-matt-pocock-skills",
-    "skill-rails-upgrade",
-    "tailwind-design-system",
-    "tdd",
-    "teach",
-    "to-spec",
-    "to-tickets",
-    "triage",
-    "vulnerability-scanner",
-    "writing-for-agents"
-  ]
+  "synced": []
 }

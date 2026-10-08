@@ -132,6 +132,10 @@ def sync_skills(dry_run=False):
             names = entry.get('name')
             path = entry.get('path')
 
+            # Allow an upstream path with no skills listed yet; skip it quietly
+            if not names:
+                continue
+
             if isinstance(names, list):
                 for name in names:
                     skills_to_sync.append({"name": name, "path": path})
