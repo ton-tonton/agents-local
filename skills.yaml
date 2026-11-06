@@ -2,6 +2,8 @@
 skills:
   - path: /Users/tontonton/agents/antigravity-awesome-skills/skills
     name:
+      - research-prompt
+      - deep-research-framework
 
   - path: /Users/tontonton/agents/.agents/skills
     name:
