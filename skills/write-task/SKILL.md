@@ -2,6 +2,7 @@
 name: write-task
 description: Draft a task, story, or bug for the Azure DevOps board. Outputs the text in chat; creating it is a separate call.
 allowed-tools: Read, Grep, Glob, Bash
+disable-model-invocation: true
 ---
 
 # Write task
